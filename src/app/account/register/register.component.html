@@ -1,0 +1,66 @@
+<h3 class="acc-title">Register</h3>
+<p class="acc-slogan">to manage your expenses at ease</p>
+<p class="acc-error-msg" *ngIf="error">{{ msg }}</p>
+<p class="acc-success-msg" *ngIf="success">{{ successMsg }}</p>
+<form [formGroup]="form" (submit)="register(form.value)">
+  <!-- Name -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" autocomplete="off" formControlName="name">
+    <mat-hint>minimum 3 characters</mat-hint>
+  </mat-form-field>
+  <div *ngIf="name.touched && name.invalid" class="acc-error-msg">
+    <p *ngIf="name.errors.required">Name is required</p>
+    <p *ngIf="name.errors.minlength">Name should be minimum {{ name.errors.minlength.requiredLength }}
+      characters</p>
+  </div>
+  <!-- Username -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Username</mat-label>
+    <input matInput type="text" autocomplete="off" formControlName="username">
+    <mat-hint>minimum 3 characters. can be lowercase alphanumeric with underscore</mat-hint>
+  </mat-form-field>
+  <div *ngIf="username.touched && username.invalid" class="acc-error-msg">
+    <p *ngIf="username.errors.required">Username is required</p>
+    <p *ngIf="username.errors.minlength">Username should be minimum {{ username.errors.minlength.requiredLength }}
+      characters</p>
+    <p *ngIf="username.errors.pattern">Username doesn't match pattern</p>
+  </div>
+  <!-- Email -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput type="text" autocomplete="off" formControlName="email">
+    <mat-hint>minimum 3 characters. should be valid email (eg: example@mail.com)</mat-hint>
+  </mat-form-field>
+  <div *ngIf="email.touched && email.invalid" class="acc-error-msg">
+    <p *ngIf="email.errors.required">Email is required</p>
+    <p *ngIf="email.errors.minlength">Email should be minimum {{ email.errors.minlength.requiredLength }}
+      characters</p>
+    <p *ngIf="email.errors.pattern">Email doesn't match pattern</p>
+  </div>
+  <!-- Mobile -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Mobile</mat-label>
+    <input matInput type="text" autocomplete="off" formControlName="mobile">
+    <mat-hint>10 digits only, without country code</mat-hint>
+  </mat-form-field>
+  <div *ngIf="mobile.touched && mobile.invalid" class="acc-error-msg">
+    <p *ngIf="mobile.errors.required">Mobile is required</p>
+    <p *ngIf="mobile.errors.minlength">Mobile should be minimum {{ mobile.errors.minlength.requiredLength }}
+      digits</p>
+    <p *ngIf="mobile.errors.pattern">Mobile doesn't match pattern</p>
+  </div>
+  <!-- Password -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password">
+    <mat-hint>minimum 8 characters</mat-hint>
+  </mat-form-field>
+  <div *ngIf="password.touched && password.invalid" class="acc-error-msg">
+    <p *ngIf="password.errors.required">Password is required</p>
+    <p *ngIf="password.errors.minlength">Password should be minimum {{ password.errors.minlength.requiredLength }}
+      characters</p>
+  </div>
+  <button mat-raised-button class="full-width" color="accent">Register</button>
+</form>
+<a routerLink="../login" class="acc-link">Already registered</a>

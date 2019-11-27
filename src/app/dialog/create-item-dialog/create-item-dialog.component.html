@@ -1,0 +1,60 @@
+<h1 mat-dialog-title>Create Item</h1>
+<form [formGroup]="form" (submit)="createItem(form.value)">
+  <div mat-dialog-content>
+    <p class="error" *ngIf="message">{{ message }}</p>
+    <div *ngIf="name.touched && name.invalid && name.errors">
+      <p class="error" *ngIf="name.errors.required">Name is mandatory field</p>
+      <p class="error" *ngIf="name.errors.minlength">Name should have {{ name.errors.minlength.requiredLength }} min
+        characters</p>
+      <p class="error" *ngIf="name.errors.maxlength">Name can have {{ name.errors.maxlength.requiredLength }} max
+        characters</p>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput autocomplete="off" formControlName="name" (keyup)="message = null">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description (Optional)</mat-label>
+      <input type="text" matInput autocomplete="off" formControlName="description">
+    </mat-form-field>
+    <div *ngIf="amount.touched && amount.invalid && amount.errors">
+      <p class="error" *ngIf="amount.errors.required">Amount is mandatory field</p>
+      <p class="error" *ngIf="amount.errors.pattern">Amount should start with non-zero and max length is 11 digits</p>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input type="text" matInput autocomplete="off" formControlName="amount" (keyup)="message = null">
+    </mat-form-field>
+    <div *ngIf="purchasedon.touched && purchasedon.invalid && purchasedon.errors">
+      <p class="error" *ngIf="purchasedon.errors.required">Purchase date is mandatory field</p>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Purchased on</mat-label>
+      <input type="text" matInput autocomplete="off" [matDatepicker]="purchasedOn" formControlName="purchasedon" (keyup)="message = null">
+      <mat-datepicker-toggle matSuffix [for]="purchasedOn"></mat-datepicker-toggle>
+      <mat-datepicker #purchasedOn></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="partial-width">
+      <mat-label>Category (Optional)</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let category of categories" value="{{ category.id }}">{{ category.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-mini-fab color="accent" style="margin-left: 10px;" (click)="openCreateCategoryDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <div *ngIf="purchasedby.touched && purchasedby.invalid && purchasedby.errors && singleton.group.id">
+      <p class="error" *ngIf="purchasedby.errors.required">Purchaser is mandatory field</p>
+    </div>
+    <mat-form-field appearance="outline" class="full-width" *ngIf="singleton.group.id">
+      <mat-label>Purchaser</mat-label>
+      <mat-select formControlName="purchasedby">
+        <mat-option *ngFor="let member of singleton.group.members" value="{{ member.id }}">{{ member.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="primary" type="submit">Create</button>
+  </div>
+</form>

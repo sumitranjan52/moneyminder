@@ -1,0 +1,35 @@
+<div class="flex-d">
+  <h4>
+    <mat-icon class="left-float">group</mat-icon>&nbsp;<span class="fs-20">Groups</span>
+  </h4>
+  <span class="flex-gap"></span>
+  <button mat-icon-button class="mat-icon-24" [matMenuTriggerFor]="groupMenu" matTooltip="Create/Join Group">
+    <mat-icon>add</mat-icon>
+  </button>
+  <mat-menu #groupMenu="matMenu">
+    <button mat-menu-item (click)="openJoinGroupDialog()">
+      <mat-icon>link</mat-icon>&nbsp;Join Group
+    </button>
+    <button mat-menu-item (click)="openCreateGroupDialog()">
+      <mat-icon>add_circle_online</mat-icon>&nbsp;Create Group
+    </button>
+  </mat-menu>
+</div>
+<mat-form-field appearance="outline" class="full-width" style="margin-top: 10px;">
+  <mat-label>Search group</mat-label>
+  <input matInput type="text">
+</mat-form-field>
+
+<button mat-raised-button class="full-width" color="accent" (click)="loadGroupItem({})">Personal Items</button>
+
+<div class="group-list">
+  <mat-nav-list>
+    <mat-list-item *ngFor="let group of groups" (click)="loadGroupItem(group)">
+      <h3 matLine><b>{{ group.name }}</b></h3>
+      <p matLine *ngIf="group.description">{{ group.description }}</p>
+      <button color="warn" mat-icon-button type="button" (click)="delete(group, $event)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-list-item>
+  </mat-nav-list>
+</div>

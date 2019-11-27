@@ -1,0 +1,21 @@
+.brand-title{
+    text-align: center;
+    font-size: 3rem;
+    -webkit-font-smoothing: antialiased;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    font-weight: 300;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.container-area{
+    width: 40%;
+    height: auto;
+    border: 1px solid #c4c4c4;
+    box-shadow: 0px 2px 8px -1px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    margin: 1rem auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background: #ffffff;
+}

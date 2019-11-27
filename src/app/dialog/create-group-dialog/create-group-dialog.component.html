@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Create Group</h1>
+<form [formGroup]="form" (submit)="createGroup(form.value)">
+  <div mat-dialog-content>
+    <p class="error" *ngIf="message">{{ message }}</p>
+    <div *ngIf="name.touched && name.invalid && name.errors">
+      <p class="error" *ngIf="name.errors.required">Name is mandatory field</p>
+      <p class="error" *ngIf="name.errors.maxlength">Name can have {{ name.errors.maxlength.requiredLength }} max
+        characters</p>
+      <p class="error" *ngIf="name.errors.minlength">Name should have {{ name.errors.minlength.requiredLength }} min
+        characters</p>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput autocomplete="off" (keyup)="message = null" formControlName="name">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description (Optional)</mat-label>
+      <input type="text" matInput autocomplete="off" formControlName="description">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="primary" type="submit">Create</button>
+  </div>
+</form>

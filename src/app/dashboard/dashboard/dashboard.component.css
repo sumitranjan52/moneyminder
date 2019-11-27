@@ -1,0 +1,33 @@
+mat-toolbar {
+    box-shadow: 0 3px 3px rgba(63, 81, 181, 0.5);
+}
+
+.brand a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.center-card {
+    width: 70%;
+    max-height: 300px;
+    padding: 1rem;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.parent {
+    display: flex;
+    padding-bottom: 1rem;
+}
+
+.group {
+    width: 30%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.item {
+    width: 70%;
+    padding: 1rem;
+    box-sizing: border-box;
+}

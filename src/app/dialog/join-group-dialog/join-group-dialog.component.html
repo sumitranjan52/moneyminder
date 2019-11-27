@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Join Group</h1>
+<div mat-dialog-content>
+  <form>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Join Code</mat-label>
+      <input type="text" matInput autocomplete="off">
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button cdkFocusInitial color="primary">Join</button>
+</div>

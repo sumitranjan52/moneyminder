@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <h1 class="brand"><a routerLink="/dashboard">Money Minder</a></h1>
+  <span class="flex-gap"></span>
+  <button mat-raised-button color="accent" [matMenuTriggerFor]="accountMenu">
+    <mat-icon>person</mat-icon>&nbsp;{{ name }}
+  </button>
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>person</mat-icon>&nbsp;Account
+    </button>
+    <button mat-menu-item>
+      <mat-icon>edit</mat-icon>&nbsp;Change Password
+    </button>
+    <button mat-menu-item>
+      <mat-icon>power_settings_new</mat-icon>&nbsp;Logout
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<div class="center-card">
+  <mat-card>
+    <app-summary></app-summary>
+  </mat-card>
+</div>
+
+<div class="parent">
+  <div class="group">
+    <mat-card>
+      <app-group></app-group>
+    </mat-card>
+  </div>
+  <div class="item">
+    <mat-card>
+      <app-item></app-item>
+    </mat-card>
+  </div>
+</div>

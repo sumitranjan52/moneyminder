@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Create Category</h1>
+<form [formGroup]="form" (submit)="createCategory(form.value)">
+  <div>
+    <p class="error" *ngIf="message">{{ message }}</p>
+    <div *ngIf="name.touched && name.invalid && name.errors">
+      <p class="error" *ngIf="name.errors.required">Name is mandatory field</p>
+      <p class="error" *ngIf="name.errors.pattern">Name can have alphabet, space and 150 max characters</p>
+      <p class="error" *ngIf="name.errors.minlength">Name should have {{ name.errors.minlength.requiredLength }} min
+        characters</p>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput autocomplete="off" (keyup)="message = null" formControlName="name">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="primary" type="submit">Create</button>
+  </div>
+</form>

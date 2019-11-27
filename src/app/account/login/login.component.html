@@ -1,0 +1,26 @@
+<h3 class="acc-title">Login</h3>
+<p class="acc-slogan">to manage your expenses</p>
+<p class="acc-error-msg" *ngIf="error">{{ msg }}</p>
+<form [formGroup]="form" (submit)="login(form.value)">
+  <!-- username -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Username</mat-label>
+    <input matInput type="text" autocomplete="off" formControlName="username">
+    <mat-hint>minimum 3 characters</mat-hint>
+  </mat-form-field>
+  <div *ngIf="username.touched && username.invalid" class="acc-error-msg">
+    <p *ngIf="username.errors.required">Username is required</p>
+    <p *ngIf="username.errors.minlength">Username should be minimum {{ username.errors.minlength.requiredLength }}
+      characters</p>
+  </div>
+  <!-- password -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password">
+  </mat-form-field>
+  <div *ngIf="password.touched && password.invalid" class="acc-error-msg">
+    <p *ngIf="password.errors.required">Password is required</p>
+  </div>
+  <button mat-raised-button class="full-width" color="accent">Login</button>
+</form>
+<a routerLink="../register" class="acc-link">Create a new account</a>

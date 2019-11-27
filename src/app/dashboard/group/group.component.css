@@ -1,0 +1,18 @@
+::ng-deep.mat-form-field-wrapper{
+    padding-bottom: 5px !important;
+}
+
+.group-list {
+    overflow-y: auto;
+    max-height: 237px;
+    padding: 5px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.mat-icon-24 {
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+}

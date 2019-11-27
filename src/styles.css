@@ -1,1 +1,86 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+*{
+    padding: 0;
+    margin: 0;
+    outline: none !important;
+}
+
+html, body { height: 100%; background-color: #eeeeee; scroll-behavior: smooth; }
+body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+   
+::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 20px;
+}
+  
+::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 20px;
+}
+
+.acc-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 300;
+}
+
+.acc-slogan {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.acc-error-msg {
+    background: rgba(255, 0, 0, 0.4);
+    color: #f00;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 0 0 5px 0;
+    font-size: 0.8rem;
+}
+
+.acc-success-msg {
+    background: rgba(115, 255, 0, 0.4);
+    color: rgb(3, 88, 7);
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 0 0 5px 0;
+    font-size: 0.8rem;
+}
+
+.acc-link {
+    display: block;
+    padding-top: 1rem;
+    text-decoration: none;
+    color: #ff4081;
+}
+
+.left-float {
+    float: left;
+}
+
+.fs-20 {
+    font-size: 20px !important;
+}
+
+.flex-gap {
+    flex: 1 1 auto;
+}
+
+.flex-d {
+    display: flex;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+}

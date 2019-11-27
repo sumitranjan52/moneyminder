@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Are you sure?</h1>
+<div mat-dialog-content>
+  want to delete 
+  <span *ngIf="which == 1">item: </span>
+  <span *ngIf="which == 2">group: </span>
+  <span *ngIf="which == 3">category: </span>
+  {{ singleton.deleteData.name }}
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button cdkFocusInitial color="warn" (click)="delete()">Delete</button>
+</div>

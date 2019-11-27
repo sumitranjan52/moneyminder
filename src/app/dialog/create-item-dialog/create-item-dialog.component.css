@@ -1,0 +1,7 @@
+.partial-width {
+    width: calc(100% - 50px);
+}
+
+::ng-deep.mat-mini-fab .mat-button-wrapper>* {
+    vertical-align: sub;
+}

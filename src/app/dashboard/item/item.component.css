@@ -1,0 +1,13 @@
+.mat-icon-24 {
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+    margin: 0 10px;
+}
+
+.item-list {
+    max-height: 300px;
+    margin-top: 1rem;
+    overflow-y: auto;
+    padding: 5px;
+}
