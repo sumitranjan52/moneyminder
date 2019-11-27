@@ -1,6 +1,6 @@
 import { BaseBean } from './baseBean';
 
-export class User extends BaseBean{
+export interface User extends BaseBean{
     id: number;
 	name: string;
 	username: string;

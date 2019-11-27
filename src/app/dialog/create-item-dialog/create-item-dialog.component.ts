@@ -94,7 +94,7 @@ export class CreateItemDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (response instanceof Item) {
+        if (this.itemService.isItem(response)) {
           this.snackBar.open("Item created successfully", "Cool!", {
             duration: 3000
           });
@@ -133,7 +133,7 @@ export class CreateItemDialogComponent implements OnInit {
         this.message = "Something went wrong";
         return;
       }
-      if (response instanceof ResponseObject) {
+      if (this.categoryService.isResponseObj(response)) {
         this.message = (<ResponseObject>response).message;
       } else {
         this.categories = <Category[]>response;

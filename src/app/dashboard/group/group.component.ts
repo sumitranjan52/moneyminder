@@ -30,7 +30,7 @@ export class GroupComponent implements OnInit {
         this.message = "Something went wrong";
         return;
       }
-      if (response instanceof ResponseObject) {
+      if (this.service.isResponseObj(response)) {
         this.message = (<ResponseObject>response).message;
       } else {
         this.groups = <Group[]>response;
@@ -80,5 +80,10 @@ export class GroupComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The delete dialog dialog was closed');
     });
+  }
+
+  edit(group: Group, event: Event) {
+    event.stopPropagation();
+    console.log(group);
   }
 }

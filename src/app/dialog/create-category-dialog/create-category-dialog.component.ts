@@ -45,7 +45,7 @@ export class CreateCategoryDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (response instanceof Category){
+        if (this.service.isCategory(response)){
           this.snackBar.open("Category created successfully", "Cool!", {
             duration: 3000
           });

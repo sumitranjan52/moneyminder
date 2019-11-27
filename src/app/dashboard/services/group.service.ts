@@ -10,6 +10,7 @@ export class GroupService extends BaseService {
 
   constructor(http: HttpClient) {
     super(http, environment.api + "group/");
+    console.log("Group service started");
   }
 
   getGroup(name: string): Group {

@@ -3,7 +3,7 @@ import { Group } from './group';
 import { User } from './user';
 import { BaseBean } from './baseBean';
 
-export class Item extends BaseBean {
+export interface Item extends BaseBean {
     id: number;
 	name: string;
 	description: string;

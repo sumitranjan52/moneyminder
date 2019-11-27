@@ -9,5 +9,6 @@ export class ItemService extends BaseService {
 
   constructor(http: HttpClient) { 
     super(http, environment.api + "item/");
+    console.log("Item service started");
   }
 }

@@ -33,11 +33,15 @@ export class BaseService {
   }
 
   delete(id: number): Observable<ResponseObject> {
-    return null;
+    return this.http.delete<ResponseObject>(this.url + id, {
+      headers: {
+        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+      }
+    }).pipe();
   }
 
   get(id: number): Observable<Item | Group | Category | ResponseObject> {
-    return this.http.get<Item | Group | Category | ResponseObject>(this.url+id, {
+    return this.http.get<Item | Group | Category | ResponseObject>(this.url + id, {
       headers: {
         "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
       }
@@ -56,4 +60,19 @@ export class BaseService {
     return null;
   }
 
+  isItem(item: any): item is Item {
+    return ((<Item>item).purchaser != null && (<Item>item).purchaser != undefined);
+  }
+
+  isGroup(group: any): group is Group {
+    return ((<Group>group).members != null && (<Group>group).members != undefined);
+  }
+
+  isCategory(category: any): category is Category {
+    return ((<Category>category).name != null && (<Category>category).name != undefined);
+  }
+
+  isResponseObj(responseObj: any): responseObj is ResponseObject {
+    return ((<ResponseObject>responseObj).message != null && (<ResponseObject>responseObj).message != undefined);
+  }
 }

@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
   <h1 class="brand"><a routerLink="/dashboard">Money Minder</a></h1>
   <span class="flex-gap"></span>
-  <button mat-raised-button color="accent" [matMenuTriggerFor]="accountMenu">
+  <button mat-button [matMenuTriggerFor]="accountMenu">
     <mat-icon>person</mat-icon>&nbsp;{{ name }}
   </button>
   <mat-menu #accountMenu="matMenu">
@@ -17,11 +17,11 @@
   </mat-menu>
 </mat-toolbar>
 
-<div class="center-card">
+<!-- <div class="center-card">
   <mat-card>
     <app-summary></app-summary>
   </mat-card>
-</div>
+</div> -->
 
 <div class="parent">
   <div class="group">

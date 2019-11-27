@@ -1,6 +1,6 @@
 import { User } from './user';
 
-export class BaseBean {
+export interface BaseBean {
     createdBy: User;
 	createdOn: Date;
 	lastModifiedBy: User;

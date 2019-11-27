@@ -27,6 +27,9 @@
     <mat-list-item *ngFor="let group of groups" (click)="loadGroupItem(group)">
       <h3 matLine><b>{{ group.name }}</b></h3>
       <p matLine *ngIf="group.description">{{ group.description }}</p>
+      <button mat-icon-button type="button" (click)="edit(group, $event)">
+        <mat-icon>edit</mat-icon>
+      </button>
       <button color="warn" mat-icon-button type="button" (click)="delete(group, $event)">
         <mat-icon>delete</mat-icon>
       </button>

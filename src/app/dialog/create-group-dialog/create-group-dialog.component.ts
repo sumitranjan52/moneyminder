@@ -42,11 +42,11 @@ export class CreateGroupDialogComponent implements OnInit {
     group.description = data.description;
     if (group.name != null && group.name != undefined && this.name.errors == null) {
       this.service.create(group).subscribe(response => {
-        if(response == null){
+        if (response == null) {
           this.message = "Something went wrong";
           return;
         }
-        if (response instanceof Group){
+        if (this.service.isGroup(response)) {
           this.snackBar.open("Group created successfully", "Cool!", {
             duration: 3000
           });
