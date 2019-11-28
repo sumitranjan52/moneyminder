@@ -45,6 +45,20 @@ export class CreateItemDialogComponent implements OnInit {
       purchasedby: [null, Validators.required],
       category: [null]
     });
+    if (this.singleton.itemEdit.id) {
+      const item = this.singleton.itemEdit;
+      this.name.setValue(item.name);
+      this.form.get("description").setValue(item.description);
+      this.amount.setValue(item.amount);
+      this.purchasedon.setValue(new Date(item.purchasedOn));
+      console.log("category", item.category.id);
+      if (item.category.id) {
+        this.form.get("category").setValue(item.category.id);
+      }
+      if (this.singleton.group.id) {
+        this.purchasedby.setValue(item.purchaser.id);
+      }
+    }
   }
 
   get name() {
@@ -64,6 +78,7 @@ export class CreateItemDialogComponent implements OnInit {
   }
 
   createItem(data: any) {
+    console.log("post request in item dialog");
     let date: Date;
     let item = {} as Item;
     if (this.singleton.group.id != null) {
@@ -109,6 +124,7 @@ export class CreateItemDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.singleton.itemEdit = {} as Item;
     this.dialogRef.close();
   }
 
@@ -141,5 +157,52 @@ export class CreateItemDialogComponent implements OnInit {
     }, (error: HttpErrorResponse) => {
       this.message = error.error.message;
     });
+  }
+
+  updateItem(data: any) {
+    console.log("put request in item dialog");
+    let date: Date;
+    let item = {
+      id: this.singleton.itemEdit.id
+    } as Item;
+    if (this.singleton.group.id != null) {
+      item.group = this.singleton.group;
+    }
+    item.name = data.name;
+    item.description = data.description;
+    item.amount = parseFloat(data.amount);
+    if (data.category != null && data.category != undefined) {
+      item.category = {
+        id: parseInt(data.category)
+      } as Category;
+    }
+    item.purchaser = {
+      id: this.singleton.itemEdit.purchaser.id
+    } as User;
+    date = <Date>data.purchasedon;
+    if (date != null) {
+      item.purchasedOn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    }
+    console.log(item);
+    if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
+      this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {
+      this.itemService.update(item).subscribe(response => {
+        if (response == null) {
+          this.message = "Something went wrong";
+          return;
+        }
+        if (this.itemService.isItem(response)) {
+          this.singleton.itemEdit = {} as Item;
+          this.snackBar.open("Item updated successfully", "Cool!", {
+            duration: 3000
+          });
+          this.dialogRef.close(response);
+        } else {
+          this.message = (<ResponseObject>response).message;
+        }
+      }, (error: HttpErrorResponse) => {
+        this.message = (<ResponseObject>error.error).message;
+      });
+    }
   }
 }

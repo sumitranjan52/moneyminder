@@ -24,9 +24,8 @@
 </mat-expansion-panel>
 
 <div class="item-list">
-    <cdk-virtual-scroll-viewport itemSize="48">
         <mat-accordion>
-            <mat-expansion-panel *cdkVirtualFor="let item of items">
+            <mat-expansion-panel *ngFor="let item of items">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <b>{{ item.name }}</b>
@@ -50,8 +49,8 @@
                     <span *ngIf="item.lastModifiedOn" class="flex-gap"><b>Last Modified On:</b>
                         {{ item.lastModifiedOn }}</span>
                 </div>
-                <div class="flex-d">
-                    <span *ngIf="item.category"><b>Category:</b> {{ item.category.name }}</span>
+                <div class="flex-d" *ngIf="item.category">
+                    <span><b>Category:</b> {{ item.category.name }}</span>
                     <button mat-icon-button class="small-btn" (click)="editCategory(item.category)">
                         <mat-icon class="small-img">edit</mat-icon>
                     </button>
@@ -69,5 +68,4 @@
                 </div>
             </mat-expansion-panel>
         </mat-accordion>
-    </cdk-virtual-scroll-viewport>
 </div>

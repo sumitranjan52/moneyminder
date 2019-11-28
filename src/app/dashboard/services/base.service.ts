@@ -29,7 +29,11 @@ export class BaseService {
   }
 
   update(data: Item | Group | Category): Observable<Item | Group | Category | ResponseObject> {
-    return null;
+    return this.http.put<Item | Group | Category | ResponseObject>(this.url, data, {
+      headers: {
+        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+      }
+    }).pipe();
   }
 
   delete(id: number): Observable<ResponseObject> {

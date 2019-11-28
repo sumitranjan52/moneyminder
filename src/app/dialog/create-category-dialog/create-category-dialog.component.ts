@@ -1,3 +1,4 @@
+import { SingletonService } from './../../services/singleton.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -17,7 +18,8 @@ export class CreateCategoryDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreateCategoryDialogComponent>,
     private fb: FormBuilder,
     private service: CategoryService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private singleton: SingletonService) { }
 
   form: FormGroup;
 
@@ -30,6 +32,9 @@ export class CreateCategoryDialogComponent implements OnInit {
       Validators.minLength(3),
       Validators.pattern("^[a-zA-Z ]{3,150}$")])]
     });
+    if(this.singleton.categoryEdit.id){
+      this.name.setValue(this.singleton.categoryEdit.name);
+    }
   }
 
   get name() {
@@ -37,6 +42,7 @@ export class CreateCategoryDialogComponent implements OnInit {
   }
 
   createCategory(data: any) {
+    console.log("create category");
     let category = {} as Category;
     category.name = data.name;
     if (category.name != null && category.name != undefined && this.name.errors == null) {
@@ -60,7 +66,34 @@ export class CreateCategoryDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.singleton.categoryEdit = {} as Category;
     this.dialogRef.close();
   }
 
+  updateCategory(data: any) {
+    console.log("update category");
+    let category = {
+      id: this.singleton.categoryEdit.id
+    } as Category;
+    category.name = data.name;
+    if (category.name != null && category.name != undefined && this.name.errors == null) {
+      this.service.update(category).subscribe(response => {
+        if(response == null){
+          this.message = "Something went wrong";
+          return;
+        }
+        if (this.service.isCategory(response)){
+          this.singleton.categoryEdit = {} as Category;
+          this.snackBar.open("Category updated successfully", "Cool!", {
+            duration: 3000
+          });
+          this.dialogRef.close(response);
+        } else {
+          this.message = (<ResponseObject>response).message;
+        }
+      }, (error: HttpErrorResponse) => {
+        this.message = (<ResponseObject>error.error).message;
+      });
+    }
+  }
 }

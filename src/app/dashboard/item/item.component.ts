@@ -12,6 +12,7 @@ import { Item } from './../../modals/item';
 import { ItemService } from './../services/item.service';
 import { Group } from './../../modals/group';
 import { FilterDialogComponent } from './../../dialog/filter-dialog/filter-dialog.component';
+import { CreateCategoryDialogComponent } from 'src/app/dialog/create-category-dialog/create-category-dialog.component';
 
 @Component({
   selector: 'app-item',
@@ -121,11 +122,34 @@ export class ItemComponent implements OnInit {
   }
 
   editItem(data: Item) {
-    console.log(data);
+    console.log("Item to edit", data);
+    this.singleton.itemEdit = data;
+    this.openCreateItemDialog();
   }
 
   editCategory(data: Category) {
     console.log(data);
+    this.singleton.categoryEdit = data;
+    this.openCreateCategoryDialog();
+  }
+
+  openCreateCategoryDialog(): void {
+    const dialogRef = this.dialog.open(CreateCategoryDialogComponent, {
+      width: '350px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (result != null) {
+        this.items.forEach((item) => {
+          if (item.category.id === result.id) {
+            item.category.name = result.name;
+          }
+        });
+      }
+      console.log('The create dialog dialog was closed');
+    });
   }
 
   deleteItem(data: Item) {
@@ -145,11 +169,20 @@ export class ItemComponent implements OnInit {
       width: '350px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: ResponseObject) => {
       if (result != undefined && result != null) {
-        if(result.code =='DELETED') {
+        if (result.code == 'DELETED') {
           console.log(result);
-          this.items.splice(this.items.indexOf(this.singleton.deleteData), 1);
+          if (result.message.indexOf("Item") > -1) {
+            this.items.splice(this.items.indexOf(this.singleton.deleteData), 1);
+          } else {
+            this.items.forEach((item) => {
+              if (item.category.id === this.singleton.deleteData.id) {
+                item.category = null;
+              }
+            });
+          }
+          this.singleton.deleteData = {};
           this.snackBar.open(result.message, "Cool!", {
             duration: 3000
           });

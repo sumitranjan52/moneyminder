@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Create Category</h1>
-<form [formGroup]="form" (submit)="createCategory(form.value)">
+<h1 mat-dialog-title>{{ singleton.categoryEdit.id?"Modify": "Create" }} Category</h1>
+<form [formGroup]="form" (submit)="singleton.categoryEdit.id? updateCategory(form.value):createCategory(form.value)">
   <div>
     <p class="error" *ngIf="message">{{ message }}</p>
     <div *ngIf="name.touched && name.invalid && name.errors">
@@ -15,6 +15,6 @@
   </div>
   <div mat-dialog-actions align="end">
     <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
-    <button mat-raised-button cdkFocusInitial color="primary" type="submit">Create</button>
+    <button mat-raised-button cdkFocusInitial color="primary" type="submit">{{ singleton.categoryEdit.id?"Update": "Create" }}</button>
   </div>
 </form>

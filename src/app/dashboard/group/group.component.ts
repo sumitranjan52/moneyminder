@@ -1,7 +1,7 @@
 import { ConfirmDialogComponent } from './../../dialog/confirm-dialog/confirm-dialog.component';
 import { SingletonService } from './../../services/singleton.service';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { Group } from './../../modals/group';
 import { GroupService } from './../services/group.service';
@@ -19,7 +19,8 @@ export class GroupComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
     private service: GroupService,
-    private singleton: SingletonService) { }
+    private singleton: SingletonService,
+    private snackBar: MatSnackBar) { }
 
   groups: Group[];
   message: string;
@@ -58,6 +59,14 @@ export class GroupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result != null && result != undefined) {
+        this.groups.forEach((group) => {
+          if (group.id === result.id) {
+            group.name = result.name;
+            group.description = result.description;
+          }
+        });
+      }
       console.log('The create dialog dialog was closed');
     });
   }
@@ -78,6 +87,16 @@ export class GroupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result != undefined && result != null) {
+        if (result.code == 'DELETED') {
+          console.log(result);
+          this.groups.splice(this.groups.indexOf(this.singleton.deleteData), 1);
+          this.singleton.deleteData = {};
+          this.snackBar.open(result.message, "Cool!", {
+            duration: 3000
+          });
+        }
+      }
       console.log('The delete dialog dialog was closed');
     });
   }
@@ -85,5 +104,7 @@ export class GroupComponent implements OnInit {
   edit(group: Group, event: Event) {
     event.stopPropagation();
     console.log(group);
+    this.singleton.groupEdit = group;
+    this.openCreateGroupDialog();
   }
 }

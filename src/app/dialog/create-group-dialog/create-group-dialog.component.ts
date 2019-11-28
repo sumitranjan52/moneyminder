@@ -1,3 +1,4 @@
+import { SingletonService } from './../../services/singleton.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
@@ -21,7 +22,8 @@ export class CreateGroupDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<CreateGroupDialogComponent>,
     private snackBar: MatSnackBar,
     private service: GroupService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private singleton: SingletonService) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -30,6 +32,10 @@ export class CreateGroupDialogComponent implements OnInit {
       Validators.minLength(3)])],
       description: [null]
     });
+    if (this.singleton.groupEdit.id) { 
+      this.name.setValue(this.singleton.groupEdit.name);
+      this.form.get("description").setValue(this.singleton.groupEdit.description);
+    }
   }
 
   get name() {
@@ -37,6 +43,7 @@ export class CreateGroupDialogComponent implements OnInit {
   }
 
   createGroup(data: any) {
+    console.log("create group");
     let group = {} as Group;
     group.name = data.name;
     group.description = data.description;
@@ -61,7 +68,39 @@ export class CreateGroupDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.singleton.groupEdit = {} as Group;
     this.dialogRef.close();
+  }
+
+  updateGroup(data: any) {
+    console.log("update group");
+    let group = {
+      id: this.singleton.groupEdit.id
+    } as Group;
+    group.name = data.name;
+    group.description = data.description;
+    if (group.name != null && group.name != undefined && this.name.errors == null) {
+      this.service.update(group).subscribe(response => {
+        if (response == null) {
+          this.message = "Something went wrong";
+          return;
+        }
+        if (this.service.isGroup(response)) {
+          if(this.singleton.group.id){
+            this.singleton.group = response;
+          }
+          this.singleton.groupEdit = {} as Group;
+          this.snackBar.open("Group updated successfully", "Cool!", {
+            duration: 3000
+          });
+          this.dialogRef.close(response);
+        } else {
+          this.message = (<ResponseObject>response).message;
+        }
+      }, (error: HttpErrorResponse) => {
+        this.message = (<ResponseObject>error.error).message;
+      });
+    }
   }
 
 }

@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Create Group</h1>
-<form [formGroup]="form" (submit)="createGroup(form.value)">
+<h1 mat-dialog-title>{{ singleton.groupEdit.id? "Modify":"Create"}} Group</h1>
+<form [formGroup]="form" (submit)="singleton.groupEdit.id? updateGroup(form.value): createGroup(form.value)">
   <div mat-dialog-content>
     <p class="error" *ngIf="message">{{ message }}</p>
     <div *ngIf="name.touched && name.invalid && name.errors">
@@ -20,6 +20,6 @@
   </div>
   <div mat-dialog-actions align="end">
     <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
-    <button mat-raised-button cdkFocusInitial color="primary" type="submit">Create</button>
+    <button mat-raised-button cdkFocusInitial color="primary" type="submit">{{ singleton.groupEdit.id? "Update":"Create"}}</button>
   </div>
 </form>
