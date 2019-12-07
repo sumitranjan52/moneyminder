@@ -79,7 +79,6 @@ export class CreateItemDialogComponent implements OnInit {
 
   createItem(data: any) {
     console.log("post request in item dialog");
-    let date: Date;
     let item = {} as Item;
     if (this.singleton.group.id != null) {
       item.group = this.singleton.group;
@@ -97,10 +96,7 @@ export class CreateItemDialogComponent implements OnInit {
         id: parseInt(data.purchasedby)
       } as User;
     }
-    date = <Date>data.purchasedon;
-    if (date != null) {
-      item.purchasedOn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-    }
+    item.purchasedOn = data.purchasedon;
     console.log(item);
     if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
       this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {
@@ -161,7 +157,6 @@ export class CreateItemDialogComponent implements OnInit {
 
   updateItem(data: any) {
     console.log("put request in item dialog");
-    let date: Date;
     let item = {
       id: this.singleton.itemEdit.id
     } as Item;
@@ -179,10 +174,7 @@ export class CreateItemDialogComponent implements OnInit {
     item.purchaser = {
       id: this.singleton.itemEdit.purchaser.id
     } as User;
-    date = <Date>data.purchasedon;
-    if (date != null) {
-      item.purchasedOn = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-    }
+    item.purchasedOn = data.purchasedon;
     console.log(item);
     if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
       this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {

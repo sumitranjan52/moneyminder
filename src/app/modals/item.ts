@@ -9,7 +9,7 @@ export interface Item extends BaseBean {
 	description: string;
 	amount: number;
 	purchaser: User;
-	purchasedOn: string;
+	purchasedOn: Date;
 	group: Group;
 	category: Category;
 }

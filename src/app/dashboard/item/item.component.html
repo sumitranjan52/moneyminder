@@ -2,6 +2,8 @@
     <h4>
         <mat-icon class="left-float">list_alt</mat-icon>&nbsp;<span class="fs-20"><span
                 *ngIf="singleton.group.name">{{ singleton.group.name }}&nbsp;</span>Items</span>
+        <span *ngIf="singleton.filterItem.purchasedOn">&nbsp;[{{ singleton.filterItem.purchasedOn.toDateString() }} -
+            {{ singleton.filterItem.lastModifiedOn.toDateString() }}]</span>
     </h4>
     <span class="flex-gap"></span>
     <button mat-icon-button class="mat-icon-24" matTooltip="Create Item" (click)="openCreateItemDialog()">
@@ -20,52 +22,53 @@
             Per head: ₹{{ average }}
         </mat-panel-description>
     </mat-expansion-panel-header>
-    <p *ngFor="let user of singleton.group.members"><b>{{ user.name }}: </b><span>{{ total }}</span></p>
+    <p *ngFor="let addition of groupMemSum"><b>{{ addition.user.name }}: </b><span>{{ addition.contribute }}/
+            {{ addition.pay }}</span></p>
 </mat-expansion-panel>
 
 <div class="item-list">
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let item of items">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <b>{{ item.name }}</b>
-                    </mat-panel-title>
-                    <mat-panel-description>
-                        ₹{{ item.amount }}
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <p *ngIf="item.description">{{ item.description }}</p>
-                <div class="flex-d">
-                    <span class="flex-gap"><b>Purchaser:</b> {{ item.purchaser.name }}</span>
-                    <span class="flex-gap"><b>Purchased On:</b> {{ item.purchasedOn }}</span>
-                </div>
-                <div class="flex-d">
-                    <span class="flex-gap"><b>Creator:</b> {{ item.createdBy.name }}</span>
-                    <span class="flex-gap"><b>Created On:</b> {{ item.createdOn }}</span>
-                </div>
-                <div class="flex-d">
-                    <span *ngIf="item.lastModifiedBy" class="flex-gap"><b>Last Modifier:</b>
-                        {{ item.lastModifiedBy.name }}</span>
-                    <span *ngIf="item.lastModifiedOn" class="flex-gap"><b>Last Modified On:</b>
-                        {{ item.lastModifiedOn }}</span>
-                </div>
-                <div class="flex-d" *ngIf="item.category">
-                    <span><b>Category:</b> {{ item.category.name }}</span>
-                    <button mat-icon-button class="small-btn" (click)="editCategory(item.category)">
-                        <mat-icon class="small-img">edit</mat-icon>
-                    </button>
-                    <button mat-icon-button class="error small-btn" (click)="deleteCategory(item.category)">
-                        <mat-icon class="small-img">delete</mat-icon>
-                    </button>
-                </div>
-                <div style="margin-left: calc(100% - 80px)">
-                    <button mat-icon-button (click)="editItem(item)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button class="error" (click)="deleteItem(item)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </div>
-            </mat-expansion-panel>
-        </mat-accordion>
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let item of items">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <b>{{ item.name }}</b>
+                </mat-panel-title>
+                <mat-panel-description>
+                    ₹{{ item.amount }}
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <p *ngIf="item.description">{{ item.description }}</p>
+            <div class="flex-d">
+                <span class="flex-gap"><b>Purchaser:</b> {{ item.purchaser.name }}</span>
+                <span class="flex-gap"><b>Purchased On:</b> {{ item.purchasedOn }}</span>
+            </div>
+            <div class="flex-d">
+                <span class="flex-gap"><b>Creator:</b> {{ item.createdBy.name }}</span>
+                <span class="flex-gap"><b>Created On:</b> {{ item.createdOn }}</span>
+            </div>
+            <div class="flex-d">
+                <span *ngIf="item.lastModifiedBy" class="flex-gap"><b>Last Modifier:</b>
+                    {{ item.lastModifiedBy.name }}</span>
+                <span *ngIf="item.lastModifiedOn" class="flex-gap"><b>Last Modified On:</b>
+                    {{ item.lastModifiedOn }}</span>
+            </div>
+            <div class="flex-d" *ngIf="item.category">
+                <span><b>Category:</b> {{ item.category.name }}</span>
+                <button mat-icon-button class="small-btn" (click)="editCategory(item.category)">
+                    <mat-icon class="small-img">edit</mat-icon>
+                </button>
+                <button mat-icon-button class="error small-btn" (click)="deleteCategory(item.category)">
+                    <mat-icon class="small-img">delete</mat-icon>
+                </button>
+            </div>
+            <div style="margin-left: calc(100% - 80px)">
+                <button mat-icon-button (click)="editItem(item)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="error" (click)="deleteItem(item)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>

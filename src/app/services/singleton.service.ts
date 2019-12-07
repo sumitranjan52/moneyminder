@@ -15,6 +15,8 @@ export class SingletonService {
   groupEdit = {} as Group;
   categoryEdit = {} as Category;
 
+  filterItem = {} as Item;
+
   eventEmitter = new EventEmitter();
 
   constructor() { }
@@ -25,6 +27,7 @@ export class SingletonService {
 
   set group(value: Group) {
     this.groupData = value;
+    this.filterItem = {} as Item;
     this.eventEmitter.emit(value);
   }
 }

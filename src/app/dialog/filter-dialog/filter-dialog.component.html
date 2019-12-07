@@ -1,27 +1,27 @@
 <h1 mat-dialog-title>Filter Item</h1>
-<div mat-dialog-content>
-  <form>
-    <mat-form-field appearance="outline" class="full-width">
+<form [formGroup]="filterForm" (submit)="filter(filterForm.value)">
+  <div mat-dialog-content>
+    <mat-form-field appearance="outline" class="full-width" *ngIf="singleton.group.id">
       <mat-label>Purchaser</mat-label>
-      <mat-select>
-        <mat-option value="1">Sumit Ranjan</mat-option>
+      <mat-select formControlName="purchaser">
+        <mat-option *ngFor="let member of singleton.group.members" [value]="member.id">{{ member.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Start date</mat-label>
-      <input type="text" matInput autocomplete="off" [matDatepicker]="start">
+      <input type="text" matInput autocomplete="off" [matDatepicker]="start" formControlName="start">
       <mat-datepicker-toggle matSuffix [for]="start"></mat-datepicker-toggle>
       <mat-datepicker #start></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>End date</mat-label>
-      <input type="text" matInput autocomplete="off" [matDatepicker]="end">
+      <input type="text" matInput autocomplete="off" [matDatepicker]="end" formControlName="end">
       <mat-datepicker-toggle matSuffix [for]="end"></mat-datepicker-toggle>
       <mat-datepicker #end></mat-datepicker>
     </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="onNoClick()">Cancel</button>
-  <button mat-raised-button cdkFocusInitial color="primary">Filter</button>
-</div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button (click)="onNoClick()" type="button">Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="primary" type="submit">Filter</button>
+  </div>
+</form>

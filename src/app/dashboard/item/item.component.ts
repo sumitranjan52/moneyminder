@@ -1,3 +1,4 @@
+import { Addition } from './../../modals/addition';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -33,6 +34,8 @@ export class ItemComponent implements OnInit {
   average: number = 0.0;
   groupData: Group;
 
+  groupMemSum: Addition[] = [];
+
   ngOnInit() {
     this.singleton.eventEmitter.subscribe((data: Group) => {
       if (data.id) {
@@ -50,8 +53,30 @@ export class ItemComponent implements OnInit {
     }
   }
 
-  calculateAvg() {
-    this.average = this.total / this.singleton.group.members.length;
+  calculateAvg() {    
+    if (this.singleton.group.members) {
+      this.average = this.total / this.singleton.group.members.length;
+      for(let member of this.singleton.group.members){
+        let addition = {
+          user: member,
+          contribute: 0,
+          pay: 0
+        } as Addition;
+        this.groupMemSum.push(addition);
+      }
+    } else {
+      this.average = 0.0;
+    }
+    if (this.groupMemSum.length > 0) {
+      for (let item of this.items) {
+        this.groupMemSum.forEach((addition) => {
+          if(addition.user.id === item.purchaser.id) {
+            addition.contribute = addition.contribute + item.amount;
+            addition.pay = addition.contribute - this.average;
+          }
+        });
+      }
+    }
   }
 
   openCreateItemDialog(): void {
@@ -77,6 +102,16 @@ export class ItemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result == null) {
+        console.log("No result found");
+        return;
+      }
+      this.items = result;
+      this.total = 0;
+      this.calculateTotal();
+      if(this.singleton.group != undefined && this.singleton.group.members) {
+        this.calculateAvg();
+      }
       console.log('The create dialog dialog was closed');
     });
   }

@@ -61,7 +61,11 @@ export class BaseService {
   }
 
   search(data: Item | Group | Category): Observable<Item[] | Group[] | Category[] | ResponseObject> {
-    return null;
+    return this.http.post<Item[]>(this.url + "search", data, {
+      headers: {
+        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+      }
+    }).pipe();
   }
 
   isItem(item: any): item is Item {

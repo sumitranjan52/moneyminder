@@ -6,6 +6,7 @@ export interface Group extends BaseBean {
     id: number;
 	name: string;
 	description: string;
+	encId: string;
 	members: User[];
 	items: Item[];
 }

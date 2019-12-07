@@ -35,6 +35,7 @@ export class GroupComponent implements OnInit {
         this.message = (<ResponseObject>response).message;
       } else {
         this.groups = <Group[]>response;
+        console.log(this.groups);
       }
     }, (error: HttpErrorResponse) => {
       this.message = error.error.message;
