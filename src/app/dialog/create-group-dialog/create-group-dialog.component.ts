@@ -57,7 +57,7 @@ export class CreateGroupDialogComponent implements OnInit {
           this.snackBar.open("Group created successfully", "Cool!", {
             duration: 3000
           });
-          this.dialogRef.close();
+          this.dialogRef.close("CREATED");
         } else {
           this.message = (<ResponseObject>response).message;
         }

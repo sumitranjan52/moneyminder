@@ -1,12 +1,29 @@
+import { AccountService } from './../account/services/account.service';
+import { SingletonService } from './singleton.service';
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  constructor() { }
+  constructor(private singleton: SingletonService,
+    private router: Router,
+    private service: AccountService) { }
   
   canActivate() {
+    if (this.singleton.loginKey) {
+      this.service.fetch(this.singleton.loginKey).subscribe(resp => {
+        console.log(resp);
+        if (this.service.isResponseObj(resp)) {
+          this.router.navigateByUrl('account');
+        } else {
+          this.singleton.user = resp;
+        }
+      });
+      return true;
+    }
+
+    this.router.navigateByUrl('account');
     return false;
   }
 }

@@ -1,3 +1,4 @@
+import { SingletonService } from './../../services/singleton.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -10,15 +11,15 @@ import { ResponseObject } from 'src/app/modals/responseObject';
 @Injectable()
 export class GroupService extends BaseService {
 
-  constructor(http: HttpClient) {
-    super(http, environment.api + "group/");
+  constructor(http: HttpClient, singleton: SingletonService) {
+    super(http, environment.api + "group/", singleton);
     console.log("Group service started");
   }
 
   join(group: Group): Observable<ResponseObject> {
     return this.getHttp().put<ResponseObject>(super.getUrl() + "join", group, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + super.getSingleton().loginKey
       }
     }).pipe();
   }

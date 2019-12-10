@@ -28,7 +28,7 @@ export class ItemComponent implements OnInit {
     private singleton: SingletonService,
     private snackBar: MatSnackBar) { }
 
-  items: Item[];
+  items: Item[] = [];
   message: string;
   total: number = 0.0;
   average: number = 0.0;
@@ -47,6 +47,10 @@ export class ItemComponent implements OnInit {
     this.loadItems();
   }
 
+  getDateString(date: number) {
+    return new Date(date).toDateString();
+  }
+
   calculateTotal() {
     for (let item of this.items) {
       this.total += item.amount;
@@ -56,6 +60,7 @@ export class ItemComponent implements OnInit {
   calculateAvg() {    
     if (this.singleton.group.members) {
       this.average = this.total / this.singleton.group.members.length;
+      this.groupMemSum = [];
       for(let member of this.singleton.group.members){
         let addition = {
           user: member,
@@ -72,6 +77,8 @@ export class ItemComponent implements OnInit {
         this.groupMemSum.forEach((addition) => {
           if(addition.user.id === item.purchaser.id) {
             addition.contribute = addition.contribute + item.amount;
+            addition.pay = addition.contribute - this.average;
+          } else {
             addition.pay = addition.contribute - this.average;
           }
         });

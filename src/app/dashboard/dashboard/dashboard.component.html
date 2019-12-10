@@ -2,16 +2,16 @@
   <h1 class="brand"><a routerLink="/dashboard">Money Minder</a></h1>
   <span class="flex-gap"></span>
   <button mat-button [matMenuTriggerFor]="accountMenu">
-    <mat-icon>person</mat-icon>&nbsp;{{ name }}
+    <mat-icon>person</mat-icon>&nbsp;{{ singleton.user.name }}
   </button>
   <mat-menu #accountMenu="matMenu">
-    <button mat-menu-item>
+    <button mat-menu-item disabled>
       <mat-icon>person</mat-icon>&nbsp;Account
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item disabled>
       <mat-icon>edit</mat-icon>&nbsp;Change Password
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="logout()">
       <mat-icon>power_settings_new</mat-icon>&nbsp;Logout
     </button>
   </mat-menu>

@@ -3,9 +3,14 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Item } from '../modals/item';
 import { Group } from './../modals/group';
 import { Category } from './../modals/category';
+import { User } from '../modals/user';
 
 @Injectable()
 export class SingletonService {
+
+  /* login key to find user is logged in or not */
+  loginKey: string;
+  user = {} as User;
 
   groupData = {} as Group;
 

@@ -6,11 +6,14 @@ import { Group } from './../../modals/group';
 import { Item } from './../../modals/item';
 import { Category } from './../../modals/category';
 import { Observable } from 'rxjs/internal/Observable';
+import { SingletonService } from 'src/app/services/singleton.service';
 
 @Injectable()
 export class BaseService {
 
-  constructor(private http: HttpClient, private url: string) { }
+  constructor(private http: HttpClient, 
+    private url: string,
+    private singleton: SingletonService) { }
 
   getHttp(): HttpClient {
     return this.http;
@@ -20,10 +23,14 @@ export class BaseService {
     return this.url;
   }
 
+  getSingleton(): SingletonService {
+    return this.singleton;
+  }
+
   create(data: Item | Group | Category): Observable<Item | Group | Category | ResponseObject> {
     return this.http.post<Item | Group | Category | ResponseObject>(this.url, data, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + this.singleton.loginKey
       }
     }).pipe();
   }
@@ -31,7 +38,7 @@ export class BaseService {
   update(data: Item | Group | Category): Observable<Item | Group | Category | ResponseObject> {
     return this.http.put<Item | Group | Category | ResponseObject>(this.url, data, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + this.singleton.loginKey
       }
     }).pipe();
   }
@@ -39,7 +46,7 @@ export class BaseService {
   delete(id: number): Observable<ResponseObject> {
     return this.http.delete<ResponseObject>(this.url + id, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + this.singleton.loginKey
       }
     }).pipe();
   }
@@ -47,7 +54,7 @@ export class BaseService {
   get(id: number): Observable<Item | Group | Category | ResponseObject> {
     return this.http.get<Item | Group | Category | ResponseObject>(this.url + id, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + this.singleton.loginKey
       }
     }).pipe();
   }
@@ -55,7 +62,7 @@ export class BaseService {
   getAll(): Observable<Item[] | Group[] | Category[] | ResponseObject> {
     return this.http.get<Item[] | Group[] | Category[] | ResponseObject>(this.url, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + this.singleton.loginKey
       }
     }).pipe();
   }
@@ -63,13 +70,13 @@ export class BaseService {
   search(data: Item | Group | Category): Observable<Item[] | Group[] | Category[] | ResponseObject> {
     return this.http.post<Item[]>(this.url + "search", data, {
       headers: {
-        "Authorization": "Bearer icKwDYGcYCapHXyBntvc2-efcSg"
+        "Authorization": "Bearer " + this.singleton.loginKey
       }
     }).pipe();
   }
 
   isItem(item: any): item is Item {
-    return ((<Item>item).purchaser != null && (<Item>item).purchaser != undefined);
+    return ((<Item>item).amount != null && (<Item>item).amount != undefined);
   }
 
   isGroup(group: any): group is Group {

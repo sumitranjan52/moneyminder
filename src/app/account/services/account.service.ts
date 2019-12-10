@@ -11,10 +11,26 @@ export class AccountService {
   constructor(private http: HttpClient) { }
 
   login(user: User) {
-    return this.http.post<Token | ResponseObject>(environment.api + "account/login", user);
+    return this.http.post<Token | ResponseObject>(environment.api + "account/login", user).pipe();
   }
 
   register(user: User) {
-    return this.http.post<ResponseObject>(environment.api + "account/reg", user);
+    return this.http.post<ResponseObject>(environment.api + "account/reg", user).pipe();
+  }
+
+  fetch(key: any) {
+    return this.http.get<User | ResponseObject>(environment.api + "account/?lk="+key).pipe();
+  }
+
+  delete(key: any) {
+    return this.http.delete<ResponseObject>(environment.api + "account/?lk="+key).pipe();
+  }
+
+  isResponseObj(resp: any): resp is ResponseObject {
+    return ((<ResponseObject>resp).message != null && (<ResponseObject>resp).message != undefined);
+  }
+
+  isToken(resp: any): resp is Token {
+    return ((<Token>resp).token != null && (<Token>resp).token != undefined);
   }
 }

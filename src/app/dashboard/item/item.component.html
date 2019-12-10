@@ -6,6 +6,9 @@
             {{ singleton.filterItem.lastModifiedOn.toDateString() }}]</span>
     </h4>
     <span class="flex-gap"></span>
+    <button mat-icon-button class="mat-icon-24" matTooltip="Refresh Items" (click)="singleton.group.id? loadGroupData():loadItems()">
+        <mat-icon>refresh</mat-icon>
+    </button>
     <button mat-icon-button class="mat-icon-24" matTooltip="Create Item" (click)="openCreateItemDialog()">
         <mat-icon>add</mat-icon>
     </button>
@@ -27,7 +30,12 @@
 </mat-expansion-panel>
 
 <div class="item-list">
-    <mat-accordion>
+    <p *ngIf="items.length == 0">
+        You don't have any item. Please add using <button mat-icon-button (click)="openCreateItemDialog()">
+            <mat-icon>add</mat-icon>
+        </button> icon.
+    </p>
+    <mat-accordion *ngIf="items.length > 0">
         <mat-expansion-panel *ngFor="let item of items">
             <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -40,17 +48,17 @@
             <p *ngIf="item.description">{{ item.description }}</p>
             <div class="flex-d">
                 <span class="flex-gap"><b>Purchaser:</b> {{ item.purchaser.name }}</span>
-                <span class="flex-gap"><b>Purchased On:</b> {{ item.purchasedOn }}</span>
+                <span class="flex-gap"><b>Purchased On:</b> {{ getDateString(item.purchasedOn) }}</span>
             </div>
             <div class="flex-d">
                 <span class="flex-gap"><b>Creator:</b> {{ item.createdBy.name }}</span>
-                <span class="flex-gap"><b>Created On:</b> {{ item.createdOn }}</span>
+                <span class="flex-gap"><b>Created On:</b> {{ getDateString(item.createdOn) }}</span>
             </div>
             <div class="flex-d">
                 <span *ngIf="item.lastModifiedBy" class="flex-gap"><b>Last Modifier:</b>
                     {{ item.lastModifiedBy.name }}</span>
                 <span *ngIf="item.lastModifiedOn" class="flex-gap"><b>Last Modified On:</b>
-                    {{ item.lastModifiedOn }}</span>
+                    {{ getDateString(item.lastModifiedOn) }}</span>
             </div>
             <div class="flex-d" *ngIf="item.category">
                 <span><b>Category:</b> {{ item.category.name }}</span>

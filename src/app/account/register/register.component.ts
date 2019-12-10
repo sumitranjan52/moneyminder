@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from './../services/account.service';
 import { User } from '../../modals/user';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +17,9 @@ export class RegisterComponent {
   successMsg: string;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private service: AccountService) {
+  constructor(private fb: FormBuilder, 
+    private service: AccountService,
+    private router: Router) {
     this.form = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.minLength(3)])],
       username: [null, Validators.compose([Validators.required, Validators.minLength(3)
@@ -65,6 +69,18 @@ export class RegisterComponent {
       && user.email != null && user.mobile != null) {
       this.service.register(user).subscribe(resp => {
         console.log(resp);
+        if (this.service.isResponseObj(resp)) {
+          if (resp.code === "CREATED") {
+            this.success = true;
+            this.successMsg = resp.message + ". Redirecting to login page in 3 sec...";
+            setTimeout(() => {
+              this.router.navigateByUrl("/account/login");
+            }, 3000);
+          } else {
+            this.error = true;
+            this.msg = resp.message;
+          }
+        }
       });
     } else {
       this.msg = "all fields are mandatory";

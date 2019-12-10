@@ -22,10 +22,14 @@ export class GroupComponent implements OnInit {
     private singleton: SingletonService,
     private snackBar: MatSnackBar) { }
 
-  groups: Group[];
+  groups: Group[] = [];
   message: string;
 
   ngOnInit() {
+    this.loadGroups();
+  }
+
+  loadGroups() {
     this.service.getAll().subscribe(response => {
       if (response == null) {
         this.message = "Something went wrong";
@@ -61,12 +65,16 @@ export class GroupComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null && result != undefined) {
-        this.groups.forEach((group) => {
-          if (group.id === result.id) {
-            group.name = result.name;
-            group.description = result.description;
-          }
-        });
+        if (result === "CREATED") {
+          this.loadGroups();
+        } else {
+          this.groups.forEach((group) => {
+            if (group.id === result.id) {
+              group.name = result.name;
+              group.description = result.description;
+            }
+          });
+        }
       }
       console.log('The create dialog dialog was closed');
     });

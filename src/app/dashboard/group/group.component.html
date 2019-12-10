@@ -22,7 +22,7 @@
 
 <button mat-raised-button class="full-width" color="accent" (click)="loadGroupItem({})">Personal Items</button>
 
-<div class="group-list">
+<div class="group-list" *ngIf="groups.length > 0">
   <mat-nav-list>
     <mat-list-item *ngFor="let group of groups" (click)="loadGroupItem(group)">
       <h3 matLine><b>{{ group.name }}</b></h3>
@@ -30,7 +30,7 @@
       <button mat-icon-button type="button" (click)="edit(group, $event)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button color="warn" mat-icon-button type="button" (click)="delete(group, $event)">
+      <button color="warn" mat-icon-button type="button" *ngIf="singleton.user.id == group.createdBy.id" (click)="delete(group, $event)">
         <mat-icon>delete</mat-icon>
       </button>
     </mat-list-item>

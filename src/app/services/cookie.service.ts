@@ -18,6 +18,8 @@ export class CookieService {
     this.documentIsAccessible = isPlatformBrowser( this.platformId );
   }
 
+  name: string = "loginKey";
+
   /**
    * @param name Cookie name
    * @returns {boolean}
@@ -80,19 +82,19 @@ export class CookieService {
   /**
    * @param name     Cookie name
    * @param value    Cookie value
-   * @param expires  Number of days until the cookies expires or an actual `Date`
-   * @param path     Cookie path
    * @param domain   Cookie domain
+   * @param path     Cookie path
    * @param secure   Secure flag
+   * @param expires  Number of days until the cookies expires or an actual `Date`
    * @param sameSite OWASP samesite token `Lax` or `Strict`
    */
   set(
     name: string,
     value: string,
-    expires?: number | Date,
-    path?: string,
     domain?: string,
+    path?: string,
     secure?: boolean,
+    expires?: number | Date,
     sameSite?: 'Lax' | 'Strict'
   ): void {
     if ( !this.documentIsAccessible ) {
@@ -139,8 +141,11 @@ export class CookieService {
     if ( !this.documentIsAccessible ) {
       return;
     }
-
-    this.set( name, '', new Date('Thu, 01 Jan 1970 00:00:01 GMT'), path, domain );
+    let secure: boolean = true;
+    if (domain === 'localhost') {
+      secure = false;
+    }
+    this.set( name, '', domain, path, secure, new Date('Thu, 01 Jan 1970 00:00:01 GMT') );
   }
 
   /**

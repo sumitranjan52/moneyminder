@@ -51,8 +51,8 @@ export class CreateItemDialogComponent implements OnInit {
       this.form.get("description").setValue(item.description);
       this.amount.setValue(item.amount);
       this.purchasedon.setValue(new Date(item.purchasedOn));
-      console.log("category", item.category.id);
-      if (item.category.id) {
+      console.log("category", item.category);
+      if (item.category) {
         this.form.get("category").setValue(item.category.id);
       }
       if (this.singleton.group.id) {
@@ -86,6 +86,7 @@ export class CreateItemDialogComponent implements OnInit {
     item.name = data.name;
     item.description = data.description;
     item.amount = parseFloat(data.amount);
+    item.purchasedOn = data.purchasedon;
     if (data.category != null && data.category != undefined) {
       item.category = {
         id: parseInt(data.category)
@@ -96,11 +97,12 @@ export class CreateItemDialogComponent implements OnInit {
         id: parseInt(data.purchasedby)
       } as User;
     }
-    item.purchasedOn = data.purchasedon;
+    console.log((<Date>data.purchasedon).getTime());
     console.log(item);
     if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
       this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {
       this.itemService.create(item).subscribe(response => {
+        console.log(response);
         if (response == null) {
           this.message = "Something went wrong";
           return;
@@ -114,6 +116,7 @@ export class CreateItemDialogComponent implements OnInit {
           this.message = (<ResponseObject>response).message;
         }
       }, (error: HttpErrorResponse) => {
+        console.log(error);
         this.message = (<ResponseObject>error.error).message;
       });
     }

@@ -14,13 +14,25 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { ItemComponent } from './item/item.component';
 import { GroupComponent } from './group/group.component';
 import { SummaryComponent } from './summary/summary.component';
+import { JoinGroupDialogComponent } from '../dialog/join-group-dialog/join-group-dialog.component';
+import { CreateGroupDialogComponent } from '../dialog/create-group-dialog/create-group-dialog.component';
+import { CreateItemDialogComponent } from '../dialog/create-item-dialog/create-item-dialog.component';
+import { CreateCategoryDialogComponent } from '../dialog/create-category-dialog/create-category-dialog.component';
+import { FilterDialogComponent } from '../dialog/filter-dialog/filter-dialog.component';
+import { ConfirmDialogComponent } from '../dialog/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
     ItemComponent,
     GroupComponent,
-    SummaryComponent
+    SummaryComponent,
+    JoinGroupDialogComponent,
+    CreateGroupDialogComponent,
+    CreateItemDialogComponent,
+    CreateCategoryDialogComponent,
+    FilterDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +48,14 @@ import { SummaryComponent } from './summary/summary.component';
     ItemService,
     CategoryService,
     GroupService
+  ],
+  entryComponents: [
+    JoinGroupDialogComponent,
+    CreateGroupDialogComponent,
+    CreateItemDialogComponent,
+    CreateCategoryDialogComponent,
+    FilterDialogComponent,
+    ConfirmDialogComponent
   ]
 })
 export class DashboardModule { }
