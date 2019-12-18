@@ -97,7 +97,6 @@ export class CreateItemDialogComponent implements OnInit {
         id: parseInt(data.purchasedby)
       } as User;
     }
-    console.log((<Date>data.purchasedon).getTime());
     console.log(item);
     if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
       this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {
@@ -175,7 +174,7 @@ export class CreateItemDialogComponent implements OnInit {
       } as Category;
     }
     item.purchaser = {
-      id: this.singleton.itemEdit.purchaser.id
+      id: parseInt(data.purchasedby)
     } as User;
     item.purchasedOn = data.purchasedon;
     console.log(item);

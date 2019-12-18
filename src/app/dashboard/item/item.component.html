@@ -4,9 +4,11 @@
                 *ngIf="singleton.group.name">{{ singleton.group.name }}&nbsp;</span>Items</span>
         <span *ngIf="singleton.filterItem.purchasedOn">&nbsp;[{{ singleton.filterItem.purchasedOn.toDateString() }} -
             {{ singleton.filterItem.lastModifiedOn.toDateString() }}]</span>
+        <span>&nbsp;({{ items.length }})</span>
     </h4>
     <span class="flex-gap"></span>
-    <button mat-icon-button class="mat-icon-24" matTooltip="Refresh Items" (click)="singleton.group.id? loadGroupData():loadItems()">
+    <button mat-icon-button class="mat-icon-24" matTooltip="Refresh Items"
+        (click)="singleton.group.id? loadGroupData():loadItems()">
         <mat-icon>refresh</mat-icon>
     </button>
     <button mat-icon-button class="mat-icon-24" matTooltip="Create Item" (click)="openCreateItemDialog()">
@@ -16,7 +18,7 @@
         <mat-icon>filter_list</mat-icon>
     </button>
 </div>
-<mat-expansion-panel style="margin-top: 10px;" *ngIf="singleton.group.id">
+<mat-expansion-panel style="margin-top: 10px;" *ngIf="singleton.group.id" class="limited-height">
     <mat-expansion-panel-header>
         <mat-panel-title>
             Total: ₹{{ total }}
@@ -25,6 +27,11 @@
             Per head: ₹{{ average }}
         </mat-panel-description>
     </mat-expansion-panel-header>
+    <div style="margin-left: calc(100% - 40px)">
+        <button mat-icon-button matTooltip="Edit members" style="position: fixed;">
+            <mat-icon>edit</mat-icon>
+        </button>
+    </div>
     <p *ngFor="let addition of groupMemSum"><b>{{ addition.user.name }}: </b><span>{{ addition.contribute }}/
             {{ addition.pay }}</span></p>
 </mat-expansion-panel>

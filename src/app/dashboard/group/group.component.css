@@ -1,10 +1,6 @@
-::ng-deep.mat-form-field-wrapper{
-    padding-bottom: 5px !important;
-}
-
 .group-list {
     overflow-y: auto;
-    max-height: 237px;
+    max-height: 330px;
     padding: 5px;
     margin-top: 10px;
     border: 1px solid #ddd;

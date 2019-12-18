@@ -1,0 +1,8 @@
+mat-toolbar {
+    box-shadow: 0 3px 3px rgba(63, 81, 181, 0.5);
+}
+
+.sc-center {
+    text-align: center;
+    padding: 1rem 0;
+}

@@ -20,6 +20,7 @@ import { CreateItemDialogComponent } from '../dialog/create-item-dialog/create-i
 import { CreateCategoryDialogComponent } from '../dialog/create-category-dialog/create-category-dialog.component';
 import { FilterDialogComponent } from '../dialog/filter-dialog/filter-dialog.component';
 import { ConfirmDialogComponent } from '../dialog/confirm-dialog/confirm-dialog.component';
+import { ShareComponent } from '../dialog/share/share.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ConfirmDialogComponent } from '../dialog/confirm-dialog/confirm-dialog.
     CreateItemDialogComponent,
     CreateCategoryDialogComponent,
     FilterDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ShareComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { ConfirmDialogComponent } from '../dialog/confirm-dialog/confirm-dialog.
     CreateItemDialogComponent,
     CreateCategoryDialogComponent,
     FilterDialogComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    ShareComponent
   ]
 })
 export class DashboardModule { }

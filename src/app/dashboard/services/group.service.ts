@@ -24,8 +24,12 @@ export class GroupService extends BaseService {
     }).pipe();
   }
 
-  getGroup(name: string): Group {
-    return null;
+  getGroup(data: Group): Observable<Group | ResponseObject> {
+    return this.getHttp().post<Group | ResponseObject>(super.getUrl() + "token", data, {
+      headers: {
+        "Authorization": "Bearer " + super.getSingleton().loginKey
+      }
+    }).pipe();
   }
 
   updateMember(group: Group): Group {

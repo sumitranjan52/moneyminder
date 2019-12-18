@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <h1 class="brand">Money Minder</h1>
+  <span class="flex-gap"></span>
+  <button mat-button>
+    <mat-icon>person</mat-icon>&nbsp;{{ singleton.user.name }}
+  </button>
+</mat-toolbar>
+<h3 class="sc-center">Join Group</h3>
+<h1 class="sc-center">{{ group.name }}</h1>
+<p class="sc-center" [class.success]="success" [class.error]="error" *ngIf="message">{{ message }}</p>
+<div class="spinner" *ngIf="!message && !record; else join;">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<ng-template #join>
+  <div class="sc-center">
+    <button mat-button routerLink="/dashboard" style="margin-right: 5px;">Dashboard</button>
+    <button color="primary" mat-raised-button style="margin-left: 5px;" [disabled]="disabled" (click)="joinGroup()">Join Group</button>
+  </div>
+</ng-template>

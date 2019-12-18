@@ -1,7 +1,8 @@
+import { ShareComponent } from './../../dialog/share/share.component';
 import { ConfirmDialogComponent } from './../../dialog/confirm-dialog/confirm-dialog.component';
 import { SingletonService } from './../../services/singleton.service';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatBottomSheet } from '@angular/material';
 
 import { Group } from './../../modals/group';
 import { GroupService } from './../services/group.service';
@@ -20,7 +21,8 @@ export class GroupComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private service: GroupService,
     private singleton: SingletonService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private bottomSheet: MatBottomSheet) { }
 
   groups: Group[] = [];
   message: string;
@@ -53,6 +55,14 @@ export class GroupComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result != null && result != undefined) {
+        if (result.code === "JOINED") {
+          this.loadGroups();
+          this.snackBar.open(result.message, "Cool!", {
+            duration: 3000
+          });
+        }
+      }
       console.log('The join group dialog was closed');
     });
   }
@@ -115,5 +125,20 @@ export class GroupComponent implements OnInit {
     console.log(group);
     this.singleton.groupEdit = group;
     this.openCreateGroupDialog();
+  }
+
+  share(group: Group, event: Event) {
+    event.stopPropagation();
+    this.openShareSheet(group);
+  }
+
+  openShareSheet(group: Group) {
+    const sheet = this.bottomSheet.open(ShareComponent, {
+      data: group
+    });
+
+    sheet.afterDismissed().subscribe(result => {
+      console.log(result);
+    });
   }
 }

@@ -1,3 +1,6 @@
+import { Group } from './../../modals/group';
+import { Item } from './../../modals/item';
+import { Category } from './../../modals/category';
 import { SingletonService } from './../../services/singleton.service';
 import { AccountService } from './../../account/services/account.service';
 import { Component, OnInit } from '@angular/core';
@@ -26,6 +29,14 @@ export class DashboardComponent implements OnInit {
         return;
       }
       if (resp.code === "DELETED") {
+        this.singleton.categoryEdit = {} as Category;
+        this.singleton.deleteData = {};
+        this.singleton.itemEdit = {} as Item;
+        this.singleton.groupEdit = {} as Group;
+
+        this.singleton.groupData = {} as Group;
+        this.singleton.filterItem = {} as Item;
+
         this.singleton.loginKey = null;
         this.cookie.delete(this.cookie.name, "/", location.hostname);
         this.router.navigateByUrl("/account");
