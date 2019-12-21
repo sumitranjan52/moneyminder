@@ -18,6 +18,14 @@ export class AccountService {
     return this.http.post<ResponseObject>(environment.api + "account/reg", user).pipe();
   }
 
+  forgot(user: User) {
+    return this.http.post<ResponseObject>(environment.api + "account/forgot", user).pipe();
+  }
+
+  reset(user: User) {
+    return this.http.post<ResponseObject>(environment.api + "account/reset", user).pipe();
+  }
+
   fetch(key: any) {
     return this.http.get<User | ResponseObject>(environment.api + "account/?lk="+key).pipe();
   }

@@ -1,0 +1,34 @@
+<div *ngIf="token">
+  <h3 class="acc-title">Reset Password</h3>
+  <p class="acc-slogan">reset password and regain access to your expenses</p>
+  <p [class.acc-error-msg]="error" [class.acc-success-msg]="success" *ngIf="error || success">{{ msg }}</p>
+  <form [formGroup]="form" (submit)="reset(form.value)">
+    <!-- password -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
+      <mat-hint>minimum 8 characters</mat-hint>
+    </mat-form-field>
+    <div *ngIf="password.touched && password.invalid" class="acc-error-msg">
+      <p *ngIf="password.errors.required">Password is required</p>
+      <p *ngIf="password.errors.minlength">Password should be minimum {{ password.errors.minlength.requiredLength }}
+        characters</p>
+    </div>
+    <!-- confirm password -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput type="password" formControlName="cpassword">
+      <mat-hint>minimum 8 characters</mat-hint>
+    </mat-form-field>
+    <div *ngIf="cpassword.touched && cpassword.invalid" class="acc-error-msg">
+      <p *ngIf="cpassword.errors.required">Confirm Password is required</p>
+      <p *ngIf="cpassword.errors.minlength">Confirm Password should be minimum
+        {{ cpassword.errors.minlength.requiredLength }}
+        characters</p>
+    </div>
+    <button mat-raised-button class="full-width" color="accent">Reset password</button>
+  </form>
+</div>
+<div *ngIf="!token">
+  Please provide a valid token for accessing this page
+</div>

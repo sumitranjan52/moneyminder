@@ -1,3 +1,5 @@
+import { ResetComponent } from './reset/reset.component';
+import { ForgotComponent } from './forgot/forgot.component';
 import { AccountComponent } from './account/account.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -21,6 +23,14 @@ const routes: Routes = [
       {
         path: "register",
         component: RegisterComponent
+      },
+      {
+        path: "forgot",
+        component: ForgotComponent
+      },
+      {
+        path: "reset",
+        component: ResetComponent
       }
     ]
   }

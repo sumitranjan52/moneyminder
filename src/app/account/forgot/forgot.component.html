@@ -1,0 +1,19 @@
+<h3 class="acc-title">Forgot Password</h3>
+<p class="acc-slogan">request password reset information</p>
+<p [class.acc-success-msg]="success" [class.acc-error-msg]="error" *ngIf="error || success">{{ msg }}</p>
+<form [formGroup]="form" (submit)="forgot(form.value)">
+  <!-- email -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" autocomplete="off" formControlName="email">
+    <mat-hint>minimum 3 characters. should be valid email (eg: example@mail.com)</mat-hint>
+  </mat-form-field>
+  <div *ngIf="email.touched && email.invalid" class="acc-error-msg">
+    <p *ngIf="email.errors.required">Email is required</p>
+    <p *ngIf="email.errors.minlength">Email should be minimum {{ email.errors.minlength.requiredLength }}
+      characters</p>
+    <p *ngIf="email.errors.pattern">Email doesn't match pattern</p>
+  </div>
+  <button mat-raised-button class="full-width" color="accent">Request password reset</button>
+</form>
+<a routerLink="/account/login" class="acc-link flex-gap">Login</a>

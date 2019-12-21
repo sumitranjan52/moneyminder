@@ -8,12 +8,16 @@ import { RegisterComponent } from './register/register.component';
 import { AccountService } from './services/account.service';
 import { AccountComponent } from './account/account.component';
 import { MaterialModule } from './../material-module';
+import { ForgotComponent } from './forgot/forgot.component';
+import { ResetComponent } from './reset/reset.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
-    AccountComponent
+    AccountComponent,
+    ForgotComponent,
+    ResetComponent
   ],
   imports: [
     CommonModule,
