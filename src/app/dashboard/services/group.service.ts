@@ -32,7 +32,11 @@ export class GroupService extends BaseService {
     }).pipe();
   }
 
-  updateMember(group: Group): Group {
-    return null;
+  updateMember(group: Group): Observable<Group | ResponseObject> {
+    return this.getHttp().put<Group | ResponseObject>(super.getUrl() + "member", group, {
+      headers: {
+        "Authorization": "Bearer " + super.getSingleton().loginKey
+      }
+    }).pipe();
   }
 }

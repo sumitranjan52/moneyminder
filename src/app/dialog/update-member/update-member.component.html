@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Update Group Members</h1>
+<div mat-dialog-content>
+  <p [class.error]="error" [class.success]="success" *ngIf="error || success">{{ msg }}</p>
+  <mat-selection-list [(ngModel)]="members" [ngModelOptions]="{standalone: true}">
+    <mat-list-option *ngFor="let user of singleton.group.members" [value]="user"
+      [disabled]="user.id == singleton.group.createdBy.id">{{ user.name }}</mat-list-option>
+  </mat-selection-list>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="close()" type="button">Cancel</button>
+  <button mat-raised-button cdkFocusInitial color="primary" type="submit" (click)="updateMembers()">Update</button>
+</div>

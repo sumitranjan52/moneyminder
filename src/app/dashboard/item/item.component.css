@@ -38,3 +38,7 @@
     height: auto;
     max-height: 100px;
 }
+
+.limited-height ::ng-deep.mat-expansion-panel-header[aria-disabled=true]{
+    color: #000;
+}

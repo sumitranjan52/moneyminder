@@ -14,6 +14,7 @@ import { ItemService } from './../services/item.service';
 import { Group } from './../../modals/group';
 import { FilterDialogComponent } from './../../dialog/filter-dialog/filter-dialog.component';
 import { CreateCategoryDialogComponent } from 'src/app/dialog/create-category-dialog/create-category-dialog.component';
+import { UpdateMemberComponent } from 'src/app/dialog/update-member/update-member.component';
 
 @Component({
   selector: 'app-item',
@@ -231,6 +232,18 @@ export class ItemComponent implements OnInit {
         }
       }
       console.log('The delete dialog was closed');
+    });
+  }
+
+  updateMem() {
+    const updateMem = this.dialog.open(UpdateMemberComponent, {
+      width: "45%"
+    });
+
+    updateMem.afterClosed().subscribe(resp => {
+      if(resp != null && resp != undefined){
+        this.loadGroupData();
+      }
     });
   }
 }

@@ -18,7 +18,7 @@
         <mat-icon>filter_list</mat-icon>
     </button>
 </div>
-<mat-expansion-panel style="margin-top: 10px;" *ngIf="singleton.group.id" class="limited-height">
+<mat-expansion-panel style="margin-top: 10px;" *ngIf="singleton.group.id" class="limited-height" [expanded]="true" disabled>
     <mat-expansion-panel-header>
         <mat-panel-title>
             Total: ₹{{ total }}
@@ -27,8 +27,8 @@
             Per head: ₹{{ average }}
         </mat-panel-description>
     </mat-expansion-panel-header>
-    <div style="margin-left: calc(100% - 40px)">
-        <button mat-icon-button matTooltip="Edit members" style="position: fixed;">
+    <div style="margin-left: calc(100% - 40px)" *ngIf="singleton.user.id == singleton.group.createdBy.id">
+        <button mat-icon-button matTooltip="Edit members" style="position: absolute;" (click)="updateMem()">
             <mat-icon>edit</mat-icon>
         </button>
     </div>

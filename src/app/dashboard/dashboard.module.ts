@@ -21,6 +21,7 @@ import { CreateCategoryDialogComponent } from '../dialog/create-category-dialog/
 import { FilterDialogComponent } from '../dialog/filter-dialog/filter-dialog.component';
 import { ConfirmDialogComponent } from '../dialog/confirm-dialog/confirm-dialog.component';
 import { ShareComponent } from '../dialog/share/share.component';
+import { UpdateMemberComponent } from '../dialog/update-member/update-member.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ShareComponent } from '../dialog/share/share.component';
     CreateCategoryDialogComponent,
     FilterDialogComponent,
     ConfirmDialogComponent,
-    ShareComponent
+    ShareComponent,
+    UpdateMemberComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +60,8 @@ import { ShareComponent } from '../dialog/share/share.component';
     CreateCategoryDialogComponent,
     FilterDialogComponent,
     ConfirmDialogComponent,
-    ShareComponent
+    ShareComponent,
+    UpdateMemberComponent
   ]
 })
 export class DashboardModule { }
