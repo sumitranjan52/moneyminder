@@ -25,10 +25,24 @@ export class GroupComponent implements OnInit {
     private bottomSheet: MatBottomSheet) { }
 
   groups: Group[] = [];
+  originalGroupList: Group[] = [];
   message: string;
 
   ngOnInit() {
     this.loadGroups();
+  }
+
+  searchGroup(evt) {
+    var query: string = evt.target.value;
+    if (query.trim().length > 0) {
+      this.groups = this.originalGroupList.filter((grp) => {
+        if (grp.name.indexOf(query) >= 0) {
+          return grp;
+        }
+      });
+    } else {
+      this.groups = this.originalGroupList;
+    }
   }
 
   loadGroups() {
@@ -41,6 +55,7 @@ export class GroupComponent implements OnInit {
         this.message = (<ResponseObject>response).message;
       } else {
         this.groups = <Group[]>response;
+        this.originalGroupList = this.groups;
         console.log(this.groups);
       }
     }, (error: HttpErrorResponse) => {
