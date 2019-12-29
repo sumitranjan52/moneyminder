@@ -15,6 +15,7 @@ import { Group } from './../../modals/group';
 import { FilterDialogComponent } from './../../dialog/filter-dialog/filter-dialog.component';
 import { CreateCategoryDialogComponent } from 'src/app/dialog/create-category-dialog/create-category-dialog.component';
 import { UpdateMemberComponent } from 'src/app/dialog/update-member/update-member.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item',
@@ -27,7 +28,8 @@ export class ItemComponent implements OnInit {
     private service: ItemService,
     private groupService: GroupService,
     public singleton: SingletonService,
-    private snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar,
+    private router: Router) { }
 
   items: Item[] = [];
   message: string;
@@ -139,6 +141,9 @@ export class ItemComponent implements OnInit {
       }
     }, (error: HttpErrorResponse) => {
       this.message = error.error.message;
+      if(error.status === 401) {
+        this.singleton.genLogout();
+      }
     });
   }
 
@@ -160,6 +165,9 @@ export class ItemComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.message = error.error.message;
+        if(error.status === 401) {
+          this.singleton.genLogout();
+        }
       });
     }
   }

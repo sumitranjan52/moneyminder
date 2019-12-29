@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from './../account/services/account.service';
 import { SingletonService } from './singleton.service';
 import { Injectable } from '@angular/core';
@@ -19,6 +20,8 @@ export class AuthGuard implements CanActivate {
         } else {
           this.singleton.user = resp;
         }
+      }, (error: HttpErrorResponse) => {
+        this.router.navigateByUrl('account');
       });
       return true;
     }

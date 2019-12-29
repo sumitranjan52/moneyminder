@@ -1,3 +1,4 @@
+import { DashboardComponent } from './../dashboard/dashboard.component';
 import { ShareComponent } from './../../dialog/share/share.component';
 import { ConfirmDialogComponent } from './../../dialog/confirm-dialog/confirm-dialog.component';
 import { SingletonService } from './../../services/singleton.service';
@@ -10,6 +11,7 @@ import { JoinGroupDialogComponent } from '../../dialog/join-group-dialog/join-gr
 import { CreateGroupDialogComponent } from './../../dialog/create-group-dialog/create-group-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseObject } from 'src/app/modals/responseObject';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-group',
@@ -22,7 +24,8 @@ export class GroupComponent implements OnInit {
     private service: GroupService,
     private singleton: SingletonService,
     private snackBar: MatSnackBar,
-    private bottomSheet: MatBottomSheet) { }
+    private bottomSheet: MatBottomSheet,
+    private router: Router) { }
 
   groups: Group[] = [];
   originalGroupList: Group[] = [];
@@ -62,6 +65,10 @@ export class GroupComponent implements OnInit {
       }
     }, (error: HttpErrorResponse) => {
       this.message = error.error.message;
+      if(error.status === 401) {
+        console.log(error.status);
+        this.singleton.genLogout();
+      }
     });
   }
 

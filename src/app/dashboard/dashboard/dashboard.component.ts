@@ -14,33 +14,8 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(public singleton: SingletonService,
-    private service: AccountService,
-    private cookie: CookieService,
-    private router: Router) { }
+  constructor(public singleton: SingletonService) { }
 
   ngOnInit() {
-  }
-
-  logout() {
-    this.service.delete(this.singleton.loginKey).subscribe(resp => {
-      console.log(resp);
-      if (resp == null) {
-        return;
-      }
-      if (resp.code === "DELETED") {
-        this.singleton.categoryEdit = {} as Category;
-        this.singleton.deleteData = {};
-        this.singleton.itemEdit = {} as Item;
-        this.singleton.groupEdit = {} as Group;
-
-        this.singleton.groupData = {} as Group;
-        this.singleton.filterItem = {} as Item;
-
-        this.singleton.loginKey = null;
-        this.cookie.delete(this.cookie.name, "/", location.hostname);
-        this.router.navigateByUrl("/account");
-      }
-    });
   }
 }
