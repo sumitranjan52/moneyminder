@@ -19,3 +19,15 @@
     box-sizing: border-box;
     background: #ffffff;
 }
+
+@media (max-width: 768px) {
+    .container-area{
+        width: 80%;
+    }
+}
+
+@media (max-width: 425px) {
+    .container-area{
+        width: 90%;
+    }
+}
