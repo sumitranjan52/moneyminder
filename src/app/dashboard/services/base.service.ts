@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 
 import { ResponseObject } from './../../modals/responseObject';
 import { Group } from './../../modals/group';
@@ -8,7 +7,6 @@ import { Category } from './../../modals/category';
 import { Observable } from 'rxjs/internal/Observable';
 import { SingletonService } from 'src/app/services/singleton.service';
 
-@Injectable()
 export class BaseService {
 
   constructor(private http: HttpClient, 

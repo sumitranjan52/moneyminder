@@ -19,7 +19,7 @@ export class CreateCategoryDialogComponent implements OnInit {
     private fb: FormBuilder,
     private service: CategoryService,
     private snackBar: MatSnackBar,
-    private singleton: SingletonService) { }
+    public singleton: SingletonService) { }
 
   form: FormGroup;
 

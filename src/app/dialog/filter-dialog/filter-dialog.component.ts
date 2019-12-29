@@ -15,7 +15,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class FilterDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<FilterDialogComponent>,
-    private singleton: SingletonService,
+    public singleton: SingletonService,
     private fb: FormBuilder,
     private service: ItemService) { }
 

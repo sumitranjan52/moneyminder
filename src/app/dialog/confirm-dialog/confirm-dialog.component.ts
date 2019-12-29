@@ -17,7 +17,7 @@ export class ConfirmDialogComponent implements OnInit {
   which: number;
 
   constructor(public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    private singleton: SingletonService,
+    public singleton: SingletonService,
     private itemService: ItemService,
     private groupService: GroupService,
     private categoryService: CategoryService) { }

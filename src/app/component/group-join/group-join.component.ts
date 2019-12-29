@@ -11,7 +11,7 @@ import { Group } from 'src/app/modals/group';
 })
 export class GroupJoinComponent implements OnInit {
 
-  constructor(private singleton: SingletonService,
+  constructor(public singleton: SingletonService,
     private activated: ActivatedRoute,
     private service: GroupService) { }
 

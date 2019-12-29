@@ -48,7 +48,6 @@ import { UpdateMemberComponent } from '../dialog/update-member/update-member.com
     ScrollingModule
   ],
   providers: [
-    BaseService,
     ItemService,
     CategoryService,
     GroupService

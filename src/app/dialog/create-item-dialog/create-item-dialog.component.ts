@@ -25,7 +25,7 @@ export class CreateItemDialogComponent implements OnInit {
     private categoryService: CategoryService,
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private singleton: SingletonService) { }
+    public singleton: SingletonService) { }
 
   categories: Category[];
   message: string;

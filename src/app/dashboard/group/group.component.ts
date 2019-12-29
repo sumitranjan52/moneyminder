@@ -28,6 +28,8 @@ export class GroupComponent implements OnInit {
   originalGroupList: Group[] = [];
   message: string;
 
+  grp = {} as Group;
+
   ngOnInit() {
     this.loadGroups();
   }

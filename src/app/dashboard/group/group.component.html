@@ -20,7 +20,7 @@
   <input matInput type="text" (keyup)="searchGroup($event)" autocomplete="off">
 </mat-form-field>
 
-<button mat-raised-button class="full-width" color="accent" (click)="loadGroupItem({})">Personal Items</button>
+<button mat-raised-button class="full-width" color="accent" (click)="loadGroupItem(grp)">Personal Items</button>
 
 <div class="group-list" *ngIf="groups.length > 0">
   <mat-nav-list>

@@ -14,7 +14,7 @@ import { User } from 'src/app/modals/user';
 export class UpdateMemberComponent implements OnInit {
 
   constructor(private dialogRef: MatDialogRef<UpdateMemberComponent>,
-    private singleton: SingletonService,
+    public singleton: SingletonService,
     private service: GroupService) { }
 
   ngOnInit() {

@@ -23,7 +23,7 @@ export class CreateGroupDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     private service: GroupService,
     private fb: FormBuilder,
-    private singleton: SingletonService) { }
+    public singleton: SingletonService) { }
 
   ngOnInit() {
     this.form = this.fb.group({

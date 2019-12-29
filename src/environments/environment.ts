@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: "http://localhost:9090/MoneyMinder/"
+  api: "http://localhost:9090/MoneyMinder/api/"
 };
 
 /*

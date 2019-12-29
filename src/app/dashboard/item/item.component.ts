@@ -26,7 +26,7 @@ export class ItemComponent implements OnInit {
   constructor(private dialog: MatDialog,
     private service: ItemService,
     private groupService: GroupService,
-    private singleton: SingletonService,
+    public singleton: SingletonService,
     private snackBar: MatSnackBar) { }
 
   items: Item[] = [];

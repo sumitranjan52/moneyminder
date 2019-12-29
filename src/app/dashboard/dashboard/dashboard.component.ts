@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private singleton: SingletonService,
+  constructor(public singleton: SingletonService,
     private service: AccountService,
     private cookie: CookieService,
     private router: Router) { }
