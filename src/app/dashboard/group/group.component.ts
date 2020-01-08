@@ -41,7 +41,7 @@ export class GroupComponent implements OnInit {
     var query: string = evt.target.value;
     if (query.trim().length > 0) {
       this.groups = this.originalGroupList.filter((grp) => {
-        if (grp.name.indexOf(query) >= 0) {
+        if (grp.name.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
           return grp;
         }
       });

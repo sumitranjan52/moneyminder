@@ -1,3 +1,5 @@
+import { SingletonService } from 'src/app/services/singleton.service';
+import { environment } from './../../../environments/environment.prod';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
@@ -10,7 +12,7 @@ import { User } from 'src/app/modals/user';
   templateUrl: './reset.component.html',
   styleUrls: ['./reset.component.css']
 })
-export class ResetComponent {
+export class ResetComponent implements OnInit {
 
   error: boolean = false;
   success: boolean = false;
@@ -23,13 +25,27 @@ export class ResetComponent {
   constructor(private fb: FormBuilder,
     private service: AccountService,
     private router: Router,
-    private activated: ActivatedRoute) {
+    private activated: ActivatedRoute,
+    private singleton: SingletonService) {
     this.activated.queryParams.subscribe(param => {
       this.token = param["token"];
     });
     this.form = this.fb.group({
       password: [null, Validators.compose([Validators.required, Validators.minLength(8)])],
       cpassword: [null, Validators.compose([Validators.required, Validators.minLength(8)])]
+    });
+  }
+
+  ngOnInit () {
+    console.log("here");
+    this.service.token().subscribe(resp => {
+      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+        this.singleton.secureToken = resp.headers.get(environment.token);
+      }
+    }, (error: HttpErrorResponse) => {
+      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+        this.singleton.secureToken = error.headers.get(environment.token);
+      }
     });
   }
 
@@ -55,20 +71,28 @@ export class ResetComponent {
       user.key = this.token;
       this.service.reset(user).subscribe(resp => {
         console.log(resp);
-        if (resp != null && resp != undefined) {
-          if (resp.code == "RESET") {
+        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+          console.log(resp.headers.get(environment.token));
+          this.singleton.secureToken = resp.headers.get(environment.token);
+        }
+        if (resp != null && resp != undefined && this.service.isResponseObj(resp.body)) {
+          if (resp.body.code == "RESET") {
             this.success = true;
-            this.msg = resp.message + ". Redirecting in 2 seconds...";
+            this.msg = resp.body.message + ". Redirecting in 2 seconds...";
             setTimeout(() => {
               this.router.navigateByUrl("/account/login");
             }, 2000);
           } else {
             this.error = true;
-            this.msg = resp.message;
+            this.msg = resp.body.message;
           }
         }
       }, (error: HttpErrorResponse) => {
         console.log(error);
+        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+          console.log(error.headers.get(environment.token));
+          this.singleton.secureToken = error.headers.get(environment.token);
+        }
       });
     } else {
       this.error = true;

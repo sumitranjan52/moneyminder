@@ -19,6 +19,9 @@ export class SingletonService {
   loginKey: string;
   user = {} as User;
 
+  // token to prevent csrf and dos attack
+  secureToken: string;
+
   groupData = {} as Group;
 
   deleteData = {} as any;

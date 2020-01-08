@@ -1,16 +1,18 @@
+import { SingletonService } from 'src/app/services/singleton.service';
+import { environment } from './../../../environments/environment';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from './../services/account.service';
 import { User } from '../../modals/user';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   error: boolean = false;
   success: boolean = false;
   msg: string;
@@ -19,6 +21,7 @@ export class RegisterComponent {
 
   constructor(private fb: FormBuilder, 
     private service: AccountService,
+    private singleton: SingletonService,
     private router: Router) {
     this.form = this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.minLength(3)])],
@@ -29,6 +32,19 @@ export class RegisterComponent {
       mobile: [null, Validators.compose([Validators.required, Validators.minLength(10)
         , Validators.pattern("(0/91)?[7-9][0-9]{9}")])],
       password: [null, Validators.compose([Validators.required, Validators.minLength(8)])]
+    });
+  }
+  
+  ngOnInit () {
+    console.log("here");
+    this.service.token().subscribe(resp => {
+      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+        this.singleton.secureToken = resp.headers.get(environment.token);
+      }
+    }, (error: HttpErrorResponse) => {
+      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+        this.singleton.secureToken = error.headers.get(environment.token);
+      }
     });
   }
 
@@ -69,17 +85,27 @@ export class RegisterComponent {
       && user.email != null && user.mobile != null) {
       this.service.register(user).subscribe(resp => {
         console.log(resp);
-        if (this.service.isResponseObj(resp)) {
-          if (resp.code === "CREATED") {
+        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+          console.log(resp.headers.get(environment.token));
+          this.singleton.secureToken = resp.headers.get(environment.token);
+        }
+        if (this.service.isResponseObj(resp.body)) {
+          if (resp.body.code === "CREATED") {
             this.success = true;
-            this.successMsg = resp.message + ". Redirecting to login page in 3 sec...";
+            this.successMsg = resp.body.message + ". Redirecting to login page in 3 sec...";
             setTimeout(() => {
               this.router.navigateByUrl("/account/login");
             }, 3000);
           } else {
             this.error = true;
-            this.msg = resp.message;
+            this.msg = resp.body.message;
           }
+        }
+      }, (error: HttpErrorResponse) => {
+        console.log(error);
+        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+          console.log(error.headers.get(environment.token));
+          this.singleton.secureToken = error.headers.get(environment.token);
         }
       });
     } else {

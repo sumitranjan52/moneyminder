@@ -1,8 +1,9 @@
+import { environment } from './../../../environments/environment';
 import { SingletonService } from './../../services/singleton.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from './../services/account.service';
 import { User } from '../../modals/user';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CookieService } from 'src/app/services/cookie.service';
 import { Router } from '@angular/router';
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   error: boolean = false;
   msg: string;
   form: FormGroup;
@@ -25,6 +26,19 @@ export class LoginComponent {
     this.form = this.fb.group({
       username: [null, Validators.compose([Validators.required, Validators.minLength(3)])],
       password: [null, Validators.compose([Validators.required])]
+    });
+  }
+
+  ngOnInit () {
+    console.log("here");
+    this.service.token().subscribe(resp => {
+      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+        this.singleton.secureToken = resp.headers.get(environment.token);
+      }
+    }, (error: HttpErrorResponse) => {
+      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+        this.singleton.secureToken = error.headers.get(environment.token);
+      }
     });
   }
 
@@ -49,21 +63,29 @@ export class LoginComponent {
     if (user.username != null && user.password != null) {
       this.service.login(user).subscribe(resp => {
         console.log(resp);
+        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+          console.log(resp.headers.get(environment.token));
+          this.singleton.secureToken = resp.headers.get(environment.token);
+        }
         if (resp == null) {
           console.log("no data is returned");
           return;
         }
-        if (this.service.isToken(resp)) {
+        if (this.service.isToken(resp.body)) {
           this.cookie.set(this.cookie.name, 
-            resp.token, 
+            resp.body.token, 
             location.hostname,
             "/",
             (location.hostname === "localhost")? false: true);
-            this.singleton.loginKey = resp.token;
+            this.singleton.loginKey = resp.body.token;
             this.router.navigateByUrl("/dashboard");
         } else if (this.service.isResponseObj(resp)) {
           this.error = true;
           this.msg = resp.message;
+        }
+      }, (error: HttpErrorResponse) => {
+        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+          this.singleton.secureToken = error.headers.get(environment.token);
         }
       });
     } else {

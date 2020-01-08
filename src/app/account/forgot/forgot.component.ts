@@ -1,3 +1,5 @@
+import { SingletonService } from 'src/app/services/singleton.service';
+import { environment } from './../../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from './../../modals/user';
 import { Component, OnInit } from '@angular/core';
@@ -9,7 +11,7 @@ import { AccountService } from '../services/account.service';
   templateUrl: './forgot.component.html',
   styleUrls: ['./forgot.component.css']
 })
-export class ForgotComponent {
+export class ForgotComponent implements OnInit {
 
   error: boolean = false;
   success: boolean = false;
@@ -17,10 +19,24 @@ export class ForgotComponent {
   form: FormGroup;
 
   constructor(private fb: FormBuilder,
-    private service: AccountService) {
+    private service: AccountService,
+    private singleton: SingletonService) {
     this.form = this.fb.group({
       email: [null, Validators.compose([Validators.required, Validators.minLength(3)
         , Validators.pattern("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")])]
+    });
+  }
+
+  ngOnInit () {
+    console.log("here");
+    this.service.token().subscribe(resp => {
+      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+        this.singleton.secureToken = resp.headers.get(environment.token);
+      }
+    }, (error: HttpErrorResponse) => {
+      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+        this.singleton.secureToken = error.headers.get(environment.token);
+      }
     });
   }
 
@@ -35,17 +51,26 @@ export class ForgotComponent {
 
     if (user.email != undefined && user.email != null) {
       this.service.forgot(user).subscribe(resp => {
-        if(resp != null && resp != undefined) {
-          if (resp.code == "SENT") {
+        console.log(resp);
+        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
+          console.log(resp.headers.get(environment.token));
+          this.singleton.secureToken = resp.headers.get(environment.token);
+        }
+        if(resp != null && resp != undefined && this.service.isResponseObj(resp.body)) {
+          if (resp.body.code == "SENT") {
             this.success = true;
-            this.msg = resp.message;
+            this.msg = resp.body.message;
           } else {
             this.error = true;
-            this.msg = resp.message;
+            this.msg = resp.body.message;
           }
         }
       }, (error: HttpErrorResponse) => {
         console.log(error);
+        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
+          console.log(error.headers.get(environment.token));
+          this.singleton.secureToken = error.headers.get(environment.token);
+        }
       });
     } else {
       this.msg = "Email is mandatory field";
