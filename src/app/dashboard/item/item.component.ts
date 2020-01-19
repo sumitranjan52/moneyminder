@@ -60,11 +60,11 @@ export class ItemComponent implements OnInit {
     }
   }
 
-  calculateAvg() {    
+  calculateAvg() {
     if (this.singleton.group.members) {
       this.average = this.total / this.singleton.group.members.length;
       this.groupMemSum = [];
-      for(let member of this.singleton.group.members){
+      for (let member of this.singleton.group.members) {
         let addition = {
           user: member,
           contribute: 0,
@@ -78,7 +78,7 @@ export class ItemComponent implements OnInit {
     if (this.groupMemSum.length > 0) {
       for (let item of this.items) {
         this.groupMemSum.forEach((addition) => {
-          if(addition.user.id === item.purchaser.id) {
+          if (addition.user.id === item.purchaser.id) {
             addition.contribute = addition.contribute + item.amount;
             addition.pay = addition.contribute - this.average;
           } else {
@@ -119,7 +119,7 @@ export class ItemComponent implements OnInit {
       this.items = result;
       this.total = 0;
       this.calculateTotal();
-      if(this.singleton.group != undefined && this.singleton.group.members) {
+      if (this.singleton.group != undefined && this.singleton.group.members) {
         this.calculateAvg();
       }
       console.log('The create dialog dialog was closed');
@@ -132,16 +132,18 @@ export class ItemComponent implements OnInit {
         this.message = "Something went wrong";
         return;
       }
-      if (this.service.isResponseObj(response)) {
-        this.message = (<ResponseObject>response).message;
+      this.singleton.setToken(response);
+      if (this.service.isResponseObj(response.body)) {
+        this.message = (<ResponseObject>response.body).message;
       } else {
-        this.items = <Item[]>response;
+        this.items = <Item[]>response.body;
         this.total = 0;
         this.calculateTotal();
       }
     }, (error: HttpErrorResponse) => {
-      this.message = error.error.message;
-      if(error.status === 401) {
+      this.singleton.setToken(error);
+      //this.message = error.error.message;
+      if (error.status === 401) {
         this.singleton.genLogout();
       }
     });
@@ -154,18 +156,20 @@ export class ItemComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.service.isResponseObj(response)) {
-          this.message = (<ResponseObject>response).message;
+        this.singleton.setToken(response);
+        if (this.service.isResponseObj(response.body)) {
+          this.message = (<ResponseObject>response.body).message;
         } else {
-          this.singleton.groupData = <Group>response;
-          this.items = (<Group>response).items;
+          this.singleton.groupData = <Group>response.body;
+          this.items = (<Group>response.body).items;
           this.total = 0;
           this.calculateTotal();
           this.calculateAvg();
         }
       }, (error: HttpErrorResponse) => {
-        this.message = error.error.message;
-        if(error.status === 401) {
+        this.singleton.setToken(error);
+        //this.message = error.error.message;
+        if (error.status === 401) {
           this.singleton.genLogout();
         }
       });
@@ -249,7 +253,7 @@ export class ItemComponent implements OnInit {
     });
 
     updateMem.afterClosed().subscribe(resp => {
-      if(resp != null && resp != undefined){
+      if (resp != null && resp != undefined) {
         this.loadGroupData();
       }
     });

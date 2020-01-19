@@ -1,8 +1,8 @@
+import { User } from './../../modals/user';
 import { SingletonService } from './../../services/singleton.service';
 import { environment } from './../../../environments/environment';
 import { ResponseObject } from '../../modals/responseObject';
 import { Token } from '../../modals/token';
-import { User } from '../../modals/user';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
@@ -57,6 +57,7 @@ export class AccountService {
     return this.http.get<Response>(environment.api + "account/?lk="+key, {
       observe: 'response',
       headers: {
+        "Authorization": this.singleton.loginKey,
         "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
@@ -66,6 +67,7 @@ export class AccountService {
     return this.http.delete<Response>(environment.api + "account/?lk="+key, {
       observe: 'response',
       headers: {
+        "Authorization": this.singleton.loginKey,
         "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
@@ -77,5 +79,9 @@ export class AccountService {
 
   isToken(resp: any): resp is Token {
     return ((<Token>resp).token != null && (<Token>resp).token != undefined);
+  }
+
+  isUser(resp: any): resp is User {
+    return ((<User>resp).email != null && (<User>resp).email != undefined);
   }
 }

@@ -1,4 +1,3 @@
-import { DashboardComponent } from './../dashboard/dashboard.component';
 import { ShareComponent } from './../../dialog/share/share.component';
 import { ConfirmDialogComponent } from './../../dialog/confirm-dialog/confirm-dialog.component';
 import { SingletonService } from './../../services/singleton.service';
@@ -56,15 +55,17 @@ export class GroupComponent implements OnInit {
         this.message = "Something went wrong";
         return;
       }
-      if (this.service.isResponseObj(response)) {
-        this.message = (<ResponseObject>response).message;
+      this.singleton.setToken(response);
+      if (this.service.isResponseObj(response.body)) {
+        this.message = (<ResponseObject>response.body).message;
       } else {
-        this.groups = <Group[]>response;
+        this.groups = <Group[]>response.body;
         this.originalGroupList = this.groups;
         console.log(this.groups);
       }
     }, (error: HttpErrorResponse) => {
-      this.message = error.error.message;
+      this.singleton.setToken(error);
+      //this.message = error.error.message;
       if(error.status === 401) {
         console.log(error.status);
         this.singleton.genLogout();

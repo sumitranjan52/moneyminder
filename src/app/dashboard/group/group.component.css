@@ -1,6 +1,6 @@
 .group-list {
     overflow-y: auto;
-    max-height: 330px;
+    max-height: 300px;
     padding: 5px;
     margin-top: 10px;
     border: 1px solid #ddd;

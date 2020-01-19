@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { GroupService } from './../../dashboard/services/group.service';
 import { SingletonService } from './../../services/singleton.service';
 import { Component, OnInit } from '@angular/core';
@@ -31,15 +32,18 @@ export class GroupJoinComponent implements OnInit {
         let group = {} as Group;
         group.encId = token;
         this.service.getGroup(group).subscribe(resp => {
+          this.singleton.setToken(resp);
           if (resp != null && resp != undefined) {
-            if (this.service.isGroup(resp)) {
-              this.group = resp;
+            if (this.service.isGroup(resp.body)) {
+              this.group = resp.body;
               this.record = true;
             } else {
-              this.message = resp.message;
+              this.message = resp.body.message;
               this.error = true;
             }
           }
+        }, (error: HttpErrorResponse) => {
+          this.singleton.setToken(error);
         });
       }
     });
@@ -50,13 +54,16 @@ export class GroupJoinComponent implements OnInit {
     this.disabled = true;
     this.service.join(this.group).subscribe(response => {
       console.log(response);
-      this.message = response.message;
-      if (response.code === "JOINED") {
+      this.singleton.setToken(response);
+      this.message = response.body.message;
+      if (response.body.code === "JOINED") {
         this.success = true;
       } else {
         this.error = true;
       }
       this.record = true;
+    }, (error: HttpErrorResponse) => {
+      this.singleton.setToken(error);
     });
   }
 }

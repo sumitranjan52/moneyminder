@@ -38,13 +38,9 @@ export class RegisterComponent implements OnInit {
   ngOnInit () {
     console.log("here");
     this.service.token().subscribe(resp => {
-      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
-        this.singleton.secureToken = resp.headers.get(environment.token);
-      }
+      this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
-      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
-        this.singleton.secureToken = error.headers.get(environment.token);
-      }
+      this.singleton.setToken(error);
     });
   }
 
@@ -85,10 +81,7 @@ export class RegisterComponent implements OnInit {
       && user.email != null && user.mobile != null) {
       this.service.register(user).subscribe(resp => {
         console.log(resp);
-        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
-          console.log(resp.headers.get(environment.token));
-          this.singleton.secureToken = resp.headers.get(environment.token);
-        }
+        this.singleton.setToken(resp);
         if (this.service.isResponseObj(resp.body)) {
           if (resp.body.code === "CREATED") {
             this.success = true;
@@ -103,10 +96,7 @@ export class RegisterComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         console.log(error);
-        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
-          console.log(error.headers.get(environment.token));
-          this.singleton.secureToken = error.headers.get(environment.token);
-        }
+        this.singleton.setToken(error);
       });
     } else {
       this.msg = "all fields are mandatory";

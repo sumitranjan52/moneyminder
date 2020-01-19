@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { ResponseObject } from './../../modals/responseObject';
 import { Group } from './../../modals/group';
@@ -25,50 +25,62 @@ export class BaseService {
     return this.singleton;
   }
 
-  create(data: Item | Group | Category): Observable<Item | Group | Category | ResponseObject> {
+  create(data: Item | Group | Category): Observable<HttpResponse<Item | Group | Category | ResponseObject>> {
     return this.http.post<Item | Group | Category | ResponseObject>(this.url, data, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + this.singleton.loginKey
+        "Authorization": this.singleton.loginKey,
+        "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
   }
 
-  update(data: Item | Group | Category): Observable<Item | Group | Category | ResponseObject> {
+  update(data: Item | Group | Category): Observable<HttpResponse<Item | Group | Category | ResponseObject>> {
     return this.http.put<Item | Group | Category | ResponseObject>(this.url, data, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + this.singleton.loginKey
+        "Authorization": this.singleton.loginKey,
+        "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
   }
 
-  delete(id: number): Observable<ResponseObject> {
+  delete(id: number): Observable<HttpResponse<ResponseObject>> {
     return this.http.delete<ResponseObject>(this.url + id, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + this.singleton.loginKey
+        "Authorization": this.singleton.loginKey,
+        "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
   }
 
-  get(id: number): Observable<Item | Group | Category | ResponseObject> {
+  get(id: number): Observable<HttpResponse<Item | Group | Category | ResponseObject>> {
     return this.http.get<Item | Group | Category | ResponseObject>(this.url + id, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + this.singleton.loginKey
+        "Authorization": this.singleton.loginKey,
+        "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
   }
 
-  getAll(): Observable<Item[] | Group[] | Category[] | ResponseObject> {
+  getAll(): Observable<HttpResponse<Item[] | Group[] | Category[] | ResponseObject>> {
     return this.http.get<Item[] | Group[] | Category[] | ResponseObject>(this.url, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + this.singleton.loginKey
+        "Authorization": this.singleton.loginKey,
+        "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
   }
 
-  search(data: Item | Group | Category): Observable<Item[] | Group[] | Category[] | ResponseObject> {
+  search(data: Item | Group | Category): Observable<HttpResponse<Item[] | Group[] | Category[] | ResponseObject>> {
     return this.http.post<Item[]>(this.url + "search", data, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + this.singleton.loginKey
+        "Authorization": this.singleton.loginKey,
+        "MM-Safe-Token": this.singleton.secureToken 
       }
     }).pipe();
   }

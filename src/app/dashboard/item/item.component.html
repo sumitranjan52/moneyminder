@@ -36,7 +36,7 @@
             {{ addition.pay }}</span></p>
 </mat-expansion-panel>
 
-<div class="item-list">
+<div class="item-list" [style.max-height]="singleton.group.id?'292px':'440px'">
     <p *ngIf="items.length == 0">
         You don't have any item. Please add using <button mat-icon-button (click)="openCreateItemDialog()">
             <mat-icon>add</mat-icon>

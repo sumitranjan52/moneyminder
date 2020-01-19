@@ -1,0 +1,88 @@
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100vh;
+  background-color: #ffffffe8;
+  z-index: 100000;
+}
+
+.spinner span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100px;
+    width: 100px;
+    border: 2px solid #555;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    border-radius: 50%;
+    animation: rotate360 2s infinite ease-in-out;
+  }
+
+  .spinner span:nth-child(1) {
+    height: 50px;
+    width: 50px;
+    border-left: 2px solid #FC7670;
+    border-right: 2px solid #FC7670;
+    animation-delay: 0.8s;
+  }
+
+  .spinner span:nth-child(2) {
+    height: 70px;
+    width: 70px;
+    border-left: 2px solid #EBD793;
+    border-right: 2px solid #EBD793;
+    animation-delay: 0.6s;
+    animation-direction: reverse;
+  }
+
+  .spinner span:nth-child(3) {
+    height: 90px;
+    width: 90px;
+    border-left: 2px solid #6ED1B7;
+    border-right: 2px solid #6ED1B7;
+    animation-delay: 0.4s;
+  }
+
+  .spinner span:nth-child(4) {
+    height: 110px;
+    width: 110px;
+    border-left: 2px solid #38A484;
+    border-right: 2px solid #38A484;
+    animation-delay: 0.2s;
+    animation-direction: reverse;
+  }
+
+  .spinner span:nth-child(5) {
+    height: 130px;
+    width: 130px;
+    border-left: 2px solid #365050;
+    border-right: 2px solid #365050;
+  }
+
+  @keyframes rotate360 {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      -webkit-transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      -moz-transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      -o-transform: translate(-50%, -50%) rotate(0deg) scale(1);
+      -ms-transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+
+    50% {
+      transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+      -webkit-transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+      -moz-transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+      -o-transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+      -ms-transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+    }
+
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg) scale(1);
+      -webkit-transform: translate(-50%, -50%) rotate(360deg) scale(1);
+      -moz-transform: translate(-50%, -50%) rotate(360deg) scale(1);
+      -o-transform: translate(-50%, -50%) rotate(360deg) scale(1);
+      -ms-transform: translate(-50%, -50%) rotate(360deg) scale(1);
+    }
+  }

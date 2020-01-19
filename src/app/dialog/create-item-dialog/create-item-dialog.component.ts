@@ -106,16 +106,18 @@ export class CreateItemDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.itemService.isItem(response)) {
+        this.singleton.setToken(response);
+        if (this.itemService.isItem(response.body)) {
           this.snackBar.open("Item created successfully", "Cool!", {
             duration: 3000
           });
-          this.dialogRef.close(response);
+          this.dialogRef.close(response.body);
         } else {
-          this.message = (<ResponseObject>response).message;
+          this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
         console.log(error);
+        this.singleton.setToken(error);
         this.message = (<ResponseObject>error.error).message;
       });
     }
@@ -147,12 +149,14 @@ export class CreateItemDialogComponent implements OnInit {
         this.message = "Something went wrong";
         return;
       }
-      if (this.categoryService.isResponseObj(response)) {
-        this.message = (<ResponseObject>response).message;
+      this.singleton.setToken(response);
+      if (this.categoryService.isResponseObj(response.body)) {
+        this.message = (<ResponseObject>response.body).message;
       } else {
-        this.categories = <Category[]>response;
+        this.categories = <Category[]>response.body;
       }
     }, (error: HttpErrorResponse) => {
+      this.singleton.setToken(error);
       this.message = error.error.message;
     });
   }
@@ -185,16 +189,18 @@ export class CreateItemDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.itemService.isItem(response)) {
+        this.singleton.setToken(response);
+        if (this.itemService.isItem(response.body)) {
           this.singleton.itemEdit = {} as Item;
           this.snackBar.open("Item updated successfully", "Cool!", {
             duration: 3000
           });
-          this.dialogRef.close(response);
+          this.dialogRef.close(response.body);
         } else {
-          this.message = (<ResponseObject>response).message;
+          this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
+        this.singleton.setToken(error);
         this.message = (<ResponseObject>error.error).message;
       });
     }

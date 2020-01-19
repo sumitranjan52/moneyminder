@@ -48,27 +48,33 @@ export class ConfirmDialogComponent implements OnInit {
         console.log("Item to delete ", this.singleton.deleteData.name);
         this.itemService.delete(this.singleton.deleteData.id).subscribe(response => {
           console.log(response);
+          this.singleton.setToken(response);
           this.dialogRef.close(response);
         }, (error: HttpErrorResponse) => {
           console.log(error);
+          this.singleton.setToken(error);
         });
         break;
       case 2:
         console.log("group to delete", this.singleton.deleteData.name);
         this.groupService.delete(this.singleton.deleteData.id).subscribe(response => {
           console.log(response);
+          this.singleton.setToken(response);
           this.dialogRef.close(response);
         }, (error: HttpErrorResponse) => {
           console.log(error);
+          this.singleton.setToken(error);
         });
         break;
       case 3:
         console.log("category to delete", this.singleton.deleteData.name);
         this.categoryService.delete(this.singleton.deleteData.id).subscribe(response => {
           console.log(response);
+          this.singleton.setToken(response);
           this.dialogRef.close(response);
         }, (error: HttpErrorResponse) => {
           console.log(error);
+          this.singleton.setToken(error);
         });
         break;
       default:

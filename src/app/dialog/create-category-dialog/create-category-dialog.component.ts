@@ -51,16 +51,18 @@ export class CreateCategoryDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.service.isCategory(response)){
+        this.singleton.setToken(response);
+        if (this.service.isCategory(response.body)){
           this.snackBar.open("Category created successfully", "Cool!", {
             duration: 3000
           });
-          this.dialogRef.close(response);
+          this.dialogRef.close(response.body);
         } else {
-          this.message = (<ResponseObject>response).message;
+          this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
         this.message = (<ResponseObject>error.error).message;
+        this.singleton.setToken(error);
       });
     }
   }
@@ -82,16 +84,18 @@ export class CreateCategoryDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.service.isCategory(response)){
+        this.singleton.setToken(response);
+        if (this.service.isCategory(response.body)){
           this.singleton.categoryEdit = {} as Category;
           this.snackBar.open("Category updated successfully", "Cool!", {
             duration: 3000
           });
-          this.dialogRef.close(response);
+          this.dialogRef.close(response.body);
         } else {
-          this.message = (<ResponseObject>response).message;
+          this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
+        this.singleton.setToken(error);
         this.message = (<ResponseObject>error.error).message;
       });
     }

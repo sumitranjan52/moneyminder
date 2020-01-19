@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { User } from './../../modals/user';
 import { Group } from './../../modals/group';
 import { ItemService } from './../../dashboard/services/item.service';
@@ -55,10 +56,13 @@ export class FilterDialogComponent implements OnInit {
           this.dialogRef.close(null);
           return;
         }
-        console.log("items ", response);
-        this.items = <Item[]>response;
+        this.singleton.setToken(response);
+        console.log("items ", response.body);
+        this.items = <Item[]>response.body;
         this.singleton.filterItem = item;
         this.dialogRef.close(this.items);
+      }, (error: HttpErrorResponse) => {
+        this.singleton.setToken(error);
       });
     }
   }

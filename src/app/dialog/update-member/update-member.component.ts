@@ -5,6 +5,7 @@ import { SingletonService } from './../../services/singleton.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { User } from 'src/app/modals/user';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-update-member',
@@ -41,19 +42,26 @@ export class UpdateMemberComponent implements OnInit {
     console.log("new group ", group);
     if (group.members.length > 0) {
       this.service.updateMember(group).subscribe(resp => {
-        if (resp != null && resp != undefined) {
-          if (this.service.isGroup(resp)) {
+        if (resp == null) {
+          this.error = true;
+          this.msg = "Somwthing went wrong";
+          return;
+        }
+        this.singleton.setToken(resp);
+        if (resp.body != null && resp.body != undefined) {
+          if (this.service.isGroup(resp.body)) {
             this.success = true;
             this.msg = "Group member updated successfully";
-            this.singleton.group = resp;
-            this.dialogRef.close(resp);
+            this.singleton.group = resp.body;
+            this.dialogRef.close(resp.body);
           } else {
             this.error = true;
-            this.msg = resp.message;
+            this.msg = resp.body.message;
           }
         }
       }, (error: HttpErrorResponse) => {
         console.log(error);
+        this.singleton.setToken(error);
       });
     } else {
       this.error = true;

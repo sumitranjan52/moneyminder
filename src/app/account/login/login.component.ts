@@ -1,6 +1,5 @@
-import { environment } from './../../../environments/environment';
 import { SingletonService } from './../../services/singleton.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from './../services/account.service';
 import { User } from '../../modals/user';
 import { Component, OnInit } from '@angular/core';
@@ -32,13 +31,9 @@ export class LoginComponent implements OnInit {
   ngOnInit () {
     console.log("here");
     this.service.token().subscribe(resp => {
-      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
-        this.singleton.secureToken = resp.headers.get(environment.token);
-      }
+      this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
-      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
-        this.singleton.secureToken = error.headers.get(environment.token);
-      }
+      this.singleton.setToken(error);
     });
   }
 
@@ -63,10 +58,7 @@ export class LoginComponent implements OnInit {
     if (user.username != null && user.password != null) {
       this.service.login(user).subscribe(resp => {
         console.log(resp);
-        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
-          console.log(resp.headers.get(environment.token));
-          this.singleton.secureToken = resp.headers.get(environment.token);
-        }
+        this.singleton.setToken(resp);
         if (resp == null) {
           console.log("no data is returned");
           return;
@@ -84,9 +76,7 @@ export class LoginComponent implements OnInit {
           this.msg = resp.message;
         }
       }, (error: HttpErrorResponse) => {
-        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
-          this.singleton.secureToken = error.headers.get(environment.token);
-        }
+        this.singleton.setToken(error);
       });
     } else {
       this.msg = "username and password are mandatory";

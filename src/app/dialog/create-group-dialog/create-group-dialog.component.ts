@@ -53,15 +53,17 @@ export class CreateGroupDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.service.isGroup(response)) {
+        this.singleton.setToken(response);
+        if (this.service.isGroup(response.body)) {
           this.snackBar.open("Group created successfully", "Cool!", {
             duration: 3000
           });
           this.dialogRef.close("CREATED");
         } else {
-          this.message = (<ResponseObject>response).message;
+          this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
+        this.singleton.setToken(error);
         this.message = (<ResponseObject>error.error).message;
       });
     }
@@ -85,19 +87,21 @@ export class CreateGroupDialogComponent implements OnInit {
           this.message = "Something went wrong";
           return;
         }
-        if (this.service.isGroup(response)) {
+        this.singleton.setToken(response);
+        if (this.service.isGroup(response.body)) {
           if(this.singleton.group.id){
-            this.singleton.group = response;
+            this.singleton.group = response.body;
           }
           this.singleton.groupEdit = {} as Group;
           this.snackBar.open("Group updated successfully", "Cool!", {
             duration: 3000
           });
-          this.dialogRef.close(response);
+          this.dialogRef.close(response.body);
         } else {
-          this.message = (<ResponseObject>response).message;
+          this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
+        this.singleton.setToken(error);
         this.message = (<ResponseObject>error.error).message;
       });
     }

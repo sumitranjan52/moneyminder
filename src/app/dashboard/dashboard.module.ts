@@ -1,5 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
-import { BaseService } from './services/base.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -22,6 +21,7 @@ import { FilterDialogComponent } from '../dialog/filter-dialog/filter-dialog.com
 import { ConfirmDialogComponent } from '../dialog/confirm-dialog/confirm-dialog.component';
 import { ShareComponent } from '../dialog/share/share.component';
 import { UpdateMemberComponent } from '../dialog/update-member/update-member.component';
+import { LoaderInterceptor } from '../component/loader/loader.intercepter';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,8 @@ import { UpdateMemberComponent } from '../dialog/update-member/update-member.com
   providers: [
     ItemService,
     CategoryService,
-    GroupService
+    GroupService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
   ],
   entryComponents: [
     JoinGroupDialogComponent,

@@ -1,18 +1,18 @@
+import { environment } from './../../environments/environment';
 import { Injectable, EventEmitter } from '@angular/core';
 
 import { Item } from '../modals/item';
 import { Group } from './../modals/group';
 import { Category } from './../modals/category';
 import { User } from '../modals/user';
-import { AccountService } from '../account/services/account.service';
 import { CookieService } from './cookie.service';
 import { Router } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class SingletonService {
 
-  constructor(private service: AccountService,
-    private cookie: CookieService,
+  constructor(private cookie: CookieService,
     private router: Router) { }
 
   /* login key to find user is logged in or not */
@@ -20,7 +20,28 @@ export class SingletonService {
   user = {} as User;
 
   // token to prevent csrf and dos attack
-  secureToken: string;
+  csrfToken: string = "";
+
+  get secureToken(){
+    if (this.csrfToken == null || this.csrfToken == undefined) {
+      return this.csrfToken;
+    }
+    return this.csrfToken;
+  }
+
+  set secureToken(token: string){
+    if (token == null || token == undefined) {
+      this.csrfToken = "";
+    }
+    this.csrfToken = token;
+  }
+
+  setToken(resp: HttpResponse<any> | HttpErrorResponse) {
+    if (resp != null && resp != undefined && resp.headers != null && resp.headers != undefined) {
+      console.log(resp.headers.get(environment.token));
+      this.secureToken = resp.headers.get(environment.token);
+    }
+  }
 
   groupData = {} as Group;
 
@@ -42,28 +63,6 @@ export class SingletonService {
     this.groupData = value;
     this.filterItem = {} as Item;
     this.eventEmitter.emit(value);
-  }
-
-  logout() {
-    this.service.delete(this.loginKey).subscribe(resp => {
-      console.log(resp);
-      if (resp == null) {
-        return;
-      }
-      if (resp.code === "DELETED") {
-        this.categoryEdit = {} as Category;
-        this.deleteData = {};
-        this.itemEdit = {} as Item;
-        this.groupEdit = {} as Group;
-
-        this.groupData = {} as Group;
-        this.filterItem = {} as Item;
-
-        this.loginKey = null;
-        this.cookie.delete(this.cookie.name, "/", location.hostname);
-        this.router.navigateByUrl("/account");
-      }
-    });
   }
 
   genLogout() {

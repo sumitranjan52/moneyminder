@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MaterialModule } from './material-module';
@@ -15,12 +15,15 @@ import { AuthGuard } from './services/authguard.service';
 import { SingletonService } from './services/singleton.service';
 import { CookieService } from './services/cookie.service';
 import { NotFoundComponent } from './component/not-found/not-found.component';
+import { LoaderComponent } from './component/loader/loader.component';
+import { LoaderInterceptor } from './component/loader/loader.intercepter';
 
 @NgModule({
   declarations: [
     AppComponent,
     GroupJoinComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,9 @@ import { NotFoundComponent } from './component/not-found/not-found.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthGuard, LoginGuard, SingletonService, CookieService, AccountService, GroupService],
+  providers: [AuthGuard, LoginGuard, SingletonService, CookieService, AccountService, GroupService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

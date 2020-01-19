@@ -1,7 +1,7 @@
 import { SingletonService } from './../../services/singleton.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { Group } from './../../modals/group';
 import { environment } from './../../../environments/environment.prod';
@@ -16,26 +16,32 @@ export class GroupService extends BaseService {
     console.log("Group service started");
   }
 
-  join(group: Group): Observable<ResponseObject> {
+  join(group: Group): Observable<HttpResponse<ResponseObject>> {
     return this.getHttp().put<ResponseObject>(super.getUrl() + "join", group, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + super.getSingleton().loginKey
+        "Authorization": super.getSingleton().loginKey,
+        "MM-Safe-Token": super.getSingleton().secureToken 
       }
     }).pipe();
   }
 
-  getGroup(data: Group): Observable<Group | ResponseObject> {
+  getGroup(data: Group): Observable<HttpResponse<Group | ResponseObject>> {
     return this.getHttp().post<Group | ResponseObject>(super.getUrl() + "token", data, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + super.getSingleton().loginKey
+        "Authorization": super.getSingleton().loginKey,
+        "MM-Safe-Token": super.getSingleton().secureToken 
       }
     }).pipe();
   }
 
-  updateMember(group: Group): Observable<Group | ResponseObject> {
+  updateMember(group: Group): Observable<HttpResponse<Group | ResponseObject>> {
     return this.getHttp().put<Group | ResponseObject>(super.getUrl() + "member", group, {
+      observe: 'response',
       headers: {
-        "Authorization": "Bearer " + super.getSingleton().loginKey
+        "Authorization": super.getSingleton().loginKey,
+        "MM-Safe-Token": super.getSingleton().secureToken 
       }
     }).pipe();
   }

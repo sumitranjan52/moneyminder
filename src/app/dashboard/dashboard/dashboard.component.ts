@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Group } from './../../modals/group';
 import { Item } from './../../modals/item';
 import { Category } from './../../modals/category';
@@ -14,8 +15,51 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(public singleton: SingletonService) { }
+  constructor(private service: AccountService,
+    public singleton: SingletonService,
+    private cookie: CookieService,
+    private router: Router) { }
 
   ngOnInit() {
+    this.service.fetch(this.singleton.loginKey).subscribe(resp => {
+      console.log(resp);
+      this.singleton.setToken(resp);
+      if (this.service.isResponseObj(resp.body)) {
+        this.singleton.genLogout();
+      } else if (this.service.isUser(resp.body)) {
+        this.singleton.user = resp.body;
+      }
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+      this.singleton.setToken(error);
+      this.singleton.genLogout();
+    });
+  }
+
+  logout() {
+    this.service.delete(this.singleton.loginKey).subscribe(resp => {
+      console.log(resp);
+      if (resp == null) {
+        return;
+      }
+      this.singleton.setToken(resp);
+      if (this.service.isResponseObj(resp.body)) {
+        if (resp.body.code === "DELETED") {
+          this.singleton.categoryEdit = {} as Category;
+          this.singleton.deleteData = {};
+          this.singleton.itemEdit = {} as Item;
+          this.singleton.groupEdit = {} as Group;
+
+          this.singleton.groupData = {} as Group;
+          this.singleton.filterItem = {} as Item;
+
+          this.singleton.loginKey = null;
+          this.cookie.delete(this.cookie.name, "/", location.hostname);
+          this.router.navigateByUrl("/account");
+        }
+      }
+    }, (error: HttpErrorResponse) => {
+      this.singleton.setToken(error);
+    });
   }
 }

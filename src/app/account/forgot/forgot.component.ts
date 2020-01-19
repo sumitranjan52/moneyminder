@@ -30,13 +30,9 @@ export class ForgotComponent implements OnInit {
   ngOnInit () {
     console.log("here");
     this.service.token().subscribe(resp => {
-      if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
-        this.singleton.secureToken = resp.headers.get(environment.token);
-      }
+      this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
-      if(error != null && error != undefined && error.headers != null && error.headers != undefined){
-        this.singleton.secureToken = error.headers.get(environment.token);
-      }
+      this.singleton.setToken(error);
     });
   }
 
@@ -52,10 +48,7 @@ export class ForgotComponent implements OnInit {
     if (user.email != undefined && user.email != null) {
       this.service.forgot(user).subscribe(resp => {
         console.log(resp);
-        if(resp != null && resp != undefined && resp.headers != null && resp.headers != undefined){
-          console.log(resp.headers.get(environment.token));
-          this.singleton.secureToken = resp.headers.get(environment.token);
-        }
+        this.singleton.setToken(resp);
         if(resp != null && resp != undefined && this.service.isResponseObj(resp.body)) {
           if (resp.body.code == "SENT") {
             this.success = true;
@@ -67,10 +60,7 @@ export class ForgotComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         console.log(error);
-        if(error != null && error != undefined && error.headers != null && error.headers != undefined){
-          console.log(error.headers.get(environment.token));
-          this.singleton.secureToken = error.headers.get(environment.token);
-        }
+        this.singleton.setToken(error);
       });
     } else {
       this.msg = "Email is mandatory field";

@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from './../account/services/account.service';
 import { SingletonService } from './singleton.service';
@@ -13,16 +14,6 @@ export class AuthGuard implements CanActivate {
   
   canActivate() {
     if (this.singleton.loginKey) {
-      this.service.fetch(this.singleton.loginKey).subscribe(resp => {
-        console.log(resp);
-        if (this.service.isResponseObj(resp)) {
-          this.router.navigateByUrl('account');
-        } else {
-          this.singleton.user = resp;
-        }
-      }, (error: HttpErrorResponse) => {
-        this.router.navigateByUrl('account');
-      });
       return true;
     }
 

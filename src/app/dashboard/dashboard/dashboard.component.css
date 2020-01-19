@@ -22,12 +22,12 @@ mat-toolbar {
 
 .group {
     width: 30%;
-    padding: 1rem;
+    padding: 0.9rem;
     box-sizing: border-box;
 }
 
 .item {
     width: 70%;
-    padding: 1rem;
+    padding: 0.9rem;
     box-sizing: border-box;
 }
