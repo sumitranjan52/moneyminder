@@ -27,7 +27,6 @@ export class GroupJoinComponent implements OnInit {
   ngOnInit() {
     this.activated.queryParams.subscribe(param => {
       const token = param["token"];
-      console.log(token);
       if (token != null && token != undefined) {
         let group = {} as Group;
         group.encId = token;
@@ -44,6 +43,11 @@ export class GroupJoinComponent implements OnInit {
           }
         }, (error: HttpErrorResponse) => {
           this.singleton.setToken(error);
+          this.message = error.error.message;
+          this.error = true;
+          if (error.status === 401) {
+            this.singleton.genLogout();
+          }
         });
       }
     });
@@ -53,7 +57,6 @@ export class GroupJoinComponent implements OnInit {
     this.record = false;
     this.disabled = true;
     this.service.join(this.group).subscribe(response => {
-      console.log(response);
       this.singleton.setToken(response);
       this.message = response.body.message;
       if (response.body.code === "JOINED") {
@@ -64,6 +67,11 @@ export class GroupJoinComponent implements OnInit {
       this.record = true;
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      this.message = error.error.message;
+      this.error = true;
+      if (error.status === 401) {        
+        this.singleton.genLogout();
+      }
     });
   }
 }

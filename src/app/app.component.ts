@@ -12,6 +12,5 @@ export class AppComponent {
   constructor(private singleton: SingletonService, 
     private cookie: CookieService) {
       this.singleton.loginKey = this.cookie.get(this.cookie.name);
-      console.log("loginkey ", this.singleton.loginKey);
     }
 }

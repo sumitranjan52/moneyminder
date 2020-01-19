@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
   successMsg: string;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private service: AccountService,
     private singleton: SingletonService,
     private router: Router) {
@@ -34,13 +34,14 @@ export class RegisterComponent implements OnInit {
       password: [null, Validators.compose([Validators.required, Validators.minLength(8)])]
     });
   }
-  
-  ngOnInit () {
-    console.log("here");
+
+  ngOnInit() {
     this.service.token().subscribe(resp => {
       this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      this.msg = error.error.message;
+      this.error = true;
     });
   }
 
@@ -66,8 +67,6 @@ export class RegisterComponent implements OnInit {
 
   register(value: any) {
     let user = {} as User;
-    console.log("value ", value);
-    console.log("user ", user);
     if (value != null || value != undefined) {
       user.name = value.name;
       user.username = value.username;
@@ -75,12 +74,10 @@ export class RegisterComponent implements OnInit {
       user.mobile = value.mobile;
       user.password = value.password;
     }
-    console.log("user ", user);
 
     if (user.username != null && user.password != null && user.name != null
       && user.email != null && user.mobile != null) {
       this.service.register(user).subscribe(resp => {
-        console.log(resp);
         this.singleton.setToken(resp);
         if (this.service.isResponseObj(resp.body)) {
           if (resp.body.code === "CREATED") {
@@ -95,8 +92,9 @@ export class RegisterComponent implements OnInit {
           }
         }
       }, (error: HttpErrorResponse) => {
-        console.log(error);
         this.singleton.setToken(error);
+        this.msg = error.error.message;
+        this.error = true;
       });
     } else {
       this.msg = "all fields are mandatory";

@@ -12,7 +12,6 @@ export class CategoryService extends BaseService {
 
   constructor(http: HttpClient, singleton: SingletonService) { 
     super(http, environment.api + "category/", singleton);
-    console.log("Category service started");
   }
 
   getCategory(name: string): Observable<Category> {

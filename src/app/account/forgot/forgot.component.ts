@@ -27,12 +27,13 @@ export class ForgotComponent implements OnInit {
     });
   }
 
-  ngOnInit () {
-    console.log("here");
+  ngOnInit() {
     this.service.token().subscribe(resp => {
       this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      this.msg = error.error.message;
+      this.error = true;
     });
   }
 
@@ -41,15 +42,13 @@ export class ForgotComponent implements OnInit {
   }
 
   forgot(value) {
-    console.log(value);
     let user = {} as User;
     user.email = value.email;
 
     if (user.email != undefined && user.email != null) {
       this.service.forgot(user).subscribe(resp => {
-        console.log(resp);
         this.singleton.setToken(resp);
-        if(resp != null && resp != undefined && this.service.isResponseObj(resp.body)) {
+        if (resp != null && resp != undefined && this.service.isResponseObj(resp.body)) {
           if (resp.body.code == "SENT") {
             this.success = true;
             this.msg = resp.body.message;
@@ -59,8 +58,9 @@ export class ForgotComponent implements OnInit {
           }
         }
       }, (error: HttpErrorResponse) => {
-        console.log(error);
         this.singleton.setToken(error);
+        this.msg = error.error.message;
+        this.error = true;
       });
     } else {
       this.msg = "Email is mandatory field";

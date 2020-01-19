@@ -5,7 +5,6 @@ import { SingletonService } from './../../services/singleton.service';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { User } from 'src/app/modals/user';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-update-member',
@@ -35,11 +34,9 @@ export class UpdateMemberComponent implements OnInit {
   }
 
   updateMembers() {
-    console.log(this.members);
     let group = {} as Group;
     group.id = this.singleton.group.id;
     group.members = this.members;
-    console.log("new group ", group);
     if (group.members.length > 0) {
       this.service.updateMember(group).subscribe(resp => {
         if (resp == null) {
@@ -60,8 +57,15 @@ export class UpdateMemberComponent implements OnInit {
           }
         }
       }, (error: HttpErrorResponse) => {
-        console.log(error);
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.msg = error.error.message;
+          this.error = true;
+          this.singleton.genLogout();
+        } else if (error.status === 406) {
+          this.error = true;
+          this.msg = error.error.message;
+        }
       });
     } else {
       this.error = true;

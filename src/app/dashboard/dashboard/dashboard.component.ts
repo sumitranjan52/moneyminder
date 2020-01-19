@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.service.fetch(this.singleton.loginKey).subscribe(resp => {
-      console.log(resp);
       this.singleton.setToken(resp);
       if (this.service.isResponseObj(resp.body)) {
         this.singleton.genLogout();
@@ -30,15 +29,15 @@ export class DashboardComponent implements OnInit {
         this.singleton.user = resp.body;
       }
     }, (error: HttpErrorResponse) => {
-      console.log(error);
       this.singleton.setToken(error);
-      this.singleton.genLogout();
+      if (error.status === 401) {
+        this.singleton.genLogout();
+      }
     });
   }
 
   logout() {
     this.service.delete(this.singleton.loginKey).subscribe(resp => {
-      console.log(resp);
       if (resp == null) {
         return;
       }
@@ -60,6 +59,9 @@ export class DashboardComponent implements OnInit {
       }
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      if (error.status === 401) {
+        this.singleton.genLogout();
+      }
     });
   }
 }

@@ -102,7 +102,6 @@ export class ItemComponent implements OnInit {
           this.loadItems();
         }
       }
-      console.log('The create dialog dialog was closed');
     });
   }
 
@@ -113,7 +112,7 @@ export class ItemComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result == null) {
-        console.log("No result found");
+        this.message = "No result found";
         return;
       }
       this.items = result;
@@ -122,7 +121,6 @@ export class ItemComponent implements OnInit {
       if (this.singleton.group != undefined && this.singleton.group.members) {
         this.calculateAvg();
       }
-      console.log('The create dialog dialog was closed');
     });
   }
 
@@ -142,7 +140,7 @@ export class ItemComponent implements OnInit {
       }
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
-      //this.message = error.error.message;
+      this.message = error.error.message;
       if (error.status === 401) {
         this.singleton.genLogout();
       }
@@ -168,7 +166,7 @@ export class ItemComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
-        //this.message = error.error.message;
+        this.message = error.error.message;
         if (error.status === 401) {
           this.singleton.genLogout();
         }
@@ -177,13 +175,11 @@ export class ItemComponent implements OnInit {
   }
 
   editItem(data: Item) {
-    console.log("Item to edit", data);
     this.singleton.itemEdit = data;
     this.openCreateItemDialog();
   }
 
   editCategory(data: Category) {
-    console.log(data);
     this.singleton.categoryEdit = data;
     this.openCreateCategoryDialog();
   }
@@ -195,7 +191,6 @@ export class ItemComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result != null) {
         this.items.forEach((item) => {
           if (item.category.id === result.id) {
@@ -203,18 +198,15 @@ export class ItemComponent implements OnInit {
           }
         });
       }
-      console.log('The create dialog dialog was closed');
     });
   }
 
   deleteItem(data: Item) {
-    console.log(data);
     this.singleton.deleteData = data;
     this.openConfirmDialog();
   }
 
   deleteCategory(data: Category) {
-    console.log(data);
     this.singleton.deleteData = data;
     this.openConfirmDialog();
   }
@@ -227,7 +219,6 @@ export class ItemComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: ResponseObject) => {
       if (result != undefined && result != null) {
         if (result.code == 'DELETED') {
-          console.log(result);
           if (result.message.indexOf("Item") > -1) {
             this.items.splice(this.items.indexOf(this.singleton.deleteData), 1);
           } else {
@@ -243,7 +234,6 @@ export class ItemComponent implements OnInit {
           });
         }
       }
-      console.log('The delete dialog was closed');
     });
   }
 

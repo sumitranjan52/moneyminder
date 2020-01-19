@@ -13,7 +13,6 @@ export class GroupService extends BaseService {
 
   constructor(http: HttpClient, singleton: SingletonService) {
     super(http, environment.api + "group/", singleton);
-    console.log("Group service started");
   }
 
   join(group: Group): Observable<HttpResponse<ResponseObject>> {

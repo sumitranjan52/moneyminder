@@ -42,7 +42,6 @@ export class CreateCategoryDialogComponent implements OnInit {
   }
 
   createCategory(data: any) {
-    console.log("create category");
     let category = {} as Category;
     category.name = data.name;
     if (category.name != null && category.name != undefined && this.name.errors == null) {
@@ -61,8 +60,11 @@ export class CreateCategoryDialogComponent implements OnInit {
           this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
-        this.message = (<ResponseObject>error.error).message;
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
+        this.message = (<ResponseObject>error.error).message;
       });
     }
   }
@@ -73,7 +75,6 @@ export class CreateCategoryDialogComponent implements OnInit {
   }
 
   updateCategory(data: any) {
-    console.log("update category");
     let category = {
       id: this.singleton.categoryEdit.id
     } as Category;
@@ -96,6 +97,9 @@ export class CreateCategoryDialogComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
         this.message = (<ResponseObject>error.error).message;
       });
     }

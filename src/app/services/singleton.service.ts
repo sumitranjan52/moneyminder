@@ -16,7 +16,7 @@ export class SingletonService {
     private router: Router) { }
 
   /* login key to find user is logged in or not */
-  loginKey: string;
+  loginKey: string = "";
   user = {} as User;
 
   // token to prevent csrf and dos attack
@@ -38,7 +38,6 @@ export class SingletonService {
 
   setToken(resp: HttpResponse<any> | HttpErrorResponse) {
     if (resp != null && resp != undefined && resp.headers != null && resp.headers != undefined) {
-      console.log(resp.headers.get(environment.token));
       this.secureToken = resp.headers.get(environment.token);
     }
   }

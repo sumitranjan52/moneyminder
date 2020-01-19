@@ -32,7 +32,7 @@ export class CreateGroupDialogComponent implements OnInit {
       Validators.minLength(3)])],
       description: [null]
     });
-    if (this.singleton.groupEdit.id) { 
+    if (this.singleton.groupEdit.id) {
       this.name.setValue(this.singleton.groupEdit.name);
       this.form.get("description").setValue(this.singleton.groupEdit.description);
     }
@@ -43,7 +43,6 @@ export class CreateGroupDialogComponent implements OnInit {
   }
 
   createGroup(data: any) {
-    console.log("create group");
     let group = {} as Group;
     group.name = data.name;
     group.description = data.description;
@@ -64,6 +63,9 @@ export class CreateGroupDialogComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
         this.message = (<ResponseObject>error.error).message;
       });
     }
@@ -75,7 +77,6 @@ export class CreateGroupDialogComponent implements OnInit {
   }
 
   updateGroup(data: any) {
-    console.log("update group");
     let group = {
       id: this.singleton.groupEdit.id
     } as Group;
@@ -89,7 +90,7 @@ export class CreateGroupDialogComponent implements OnInit {
         }
         this.singleton.setToken(response);
         if (this.service.isGroup(response.body)) {
-          if(this.singleton.group.id){
+          if (this.singleton.group.id) {
             this.singleton.group = response.body;
           }
           this.singleton.groupEdit = {} as Group;
@@ -102,6 +103,9 @@ export class CreateGroupDialogComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
         this.message = (<ResponseObject>error.error).message;
       });
     }

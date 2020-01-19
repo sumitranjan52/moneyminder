@@ -18,7 +18,7 @@ export class CookieService {
     this.documentIsAccessible = isPlatformBrowser( this.platformId );
   }
 
-  name: string = "loginKey";
+  name: string = "MMloginKey";
 
   /**
    * @param name Cookie name

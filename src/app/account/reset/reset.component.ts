@@ -36,12 +36,13 @@ export class ResetComponent implements OnInit {
     });
   }
 
-  ngOnInit () {
-    console.log("here");
+  ngOnInit() {
     this.service.token().subscribe(resp => {
       this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      this.msg = error.error.message;
+      this.error = true;
     });
   }
 
@@ -54,7 +55,6 @@ export class ResetComponent implements OnInit {
   }
 
   reset(value) {
-    console.log(value);
     if (value.password != undefined && value.cpassword != undefined && value.password != null && value.cpassword != null) {
       let user = {} as User;
       if (value.password == value.cpassword) {
@@ -66,7 +66,6 @@ export class ResetComponent implements OnInit {
       }
       user.key = this.token;
       this.service.reset(user).subscribe(resp => {
-        console.log(resp);
         this.singleton.setToken(resp);
         if (resp != null && resp != undefined && this.service.isResponseObj(resp.body)) {
           if (resp.body.code == "RESET") {
@@ -81,8 +80,9 @@ export class ResetComponent implements OnInit {
           }
         }
       }, (error: HttpErrorResponse) => {
-        console.log(error);
         this.singleton.setToken(error);
+        this.msg = error.error.message;
+        this.error = true;
       });
     } else {
       this.error = true;

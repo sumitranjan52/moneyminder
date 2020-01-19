@@ -51,7 +51,6 @@ export class CreateItemDialogComponent implements OnInit {
       this.form.get("description").setValue(item.description);
       this.amount.setValue(item.amount);
       this.purchasedon.setValue(new Date(item.purchasedOn));
-      console.log("category", item.category);
       if (item.category) {
         this.form.get("category").setValue(item.category.id);
       }
@@ -78,7 +77,6 @@ export class CreateItemDialogComponent implements OnInit {
   }
 
   createItem(data: any) {
-    console.log("post request in item dialog");
     let item = {} as Item;
     if (this.singleton.group.id != null) {
       item.group = this.singleton.group;
@@ -97,11 +95,9 @@ export class CreateItemDialogComponent implements OnInit {
         id: parseInt(data.purchasedby)
       } as User;
     }
-    console.log(item);
     if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
       this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {
       this.itemService.create(item).subscribe(response => {
-        console.log(response);
         if (response == null) {
           this.message = "Something went wrong";
           return;
@@ -116,8 +112,10 @@ export class CreateItemDialogComponent implements OnInit {
           this.message = (<ResponseObject>response.body).message;
         }
       }, (error: HttpErrorResponse) => {
-        console.log(error);
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
         this.message = (<ResponseObject>error.error).message;
       });
     }
@@ -135,11 +133,9 @@ export class CreateItemDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (result != null) {
         this.loadCategories();
       }
-      console.log('The create dialog dialog was closed');
     });
   }
 
@@ -157,12 +153,14 @@ export class CreateItemDialogComponent implements OnInit {
       }
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      if (error.status === 401) {
+        this.singleton.genLogout();
+      }
       this.message = error.error.message;
     });
   }
 
   updateItem(data: any) {
-    console.log("put request in item dialog");
     let item = {
       id: this.singleton.itemEdit.id
     } as Item;
@@ -181,7 +179,6 @@ export class CreateItemDialogComponent implements OnInit {
       id: parseInt(data.purchasedby)
     } as User;
     item.purchasedOn = data.purchasedon;
-    console.log(item);
     if (item.name != null && item.amount > 0 && item.purchasedOn != null &&
       this.name.errors == null && this.amount.errors == null && this.purchasedon.errors == null) {
       this.itemService.update(item).subscribe(response => {
@@ -202,6 +199,9 @@ export class CreateItemDialogComponent implements OnInit {
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
         this.message = (<ResponseObject>error.error).message;
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
       });
     }
   }

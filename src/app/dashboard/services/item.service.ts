@@ -10,6 +10,5 @@ export class ItemService extends BaseService {
 
   constructor(http: HttpClient, singleton: SingletonService) { 
     super(http, environment.api + "item/", singleton);
-    console.log("Item service started");
   }
 }

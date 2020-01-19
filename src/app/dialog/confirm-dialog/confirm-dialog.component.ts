@@ -38,47 +38,45 @@ export class ConfirmDialogComponent implements OnInit {
     } else if (this.itemService.isCategory(this.singleton.deleteData)) {
       this.which = 3;
     }
-    console.log(this.which);
     return this.which;
   }
 
   delete() {
     switch (this.which) {
       case 1:
-        console.log("Item to delete ", this.singleton.deleteData.name);
         this.itemService.delete(this.singleton.deleteData.id).subscribe(response => {
-          console.log(response);
           this.singleton.setToken(response);
           this.dialogRef.close(response);
         }, (error: HttpErrorResponse) => {
-          console.log(error);
           this.singleton.setToken(error);
+          if (error.status === 401) {
+            this.singleton.genLogout();
+          }
         });
         break;
       case 2:
-        console.log("group to delete", this.singleton.deleteData.name);
         this.groupService.delete(this.singleton.deleteData.id).subscribe(response => {
-          console.log(response);
           this.singleton.setToken(response);
           this.dialogRef.close(response);
         }, (error: HttpErrorResponse) => {
-          console.log(error);
           this.singleton.setToken(error);
+          if (error.status === 401) {
+            this.singleton.genLogout();
+          }
         });
         break;
       case 3:
-        console.log("category to delete", this.singleton.deleteData.name);
         this.categoryService.delete(this.singleton.deleteData.id).subscribe(response => {
-          console.log(response);
           this.singleton.setToken(response);
           this.dialogRef.close(response);
         }, (error: HttpErrorResponse) => {
-          console.log(error);
           this.singleton.setToken(error);
+          if (error.status === 401) {
+            this.singleton.genLogout();
+          }
         });
         break;
       default:
-        console.log("Failed to delete");
         break;
     }
   }

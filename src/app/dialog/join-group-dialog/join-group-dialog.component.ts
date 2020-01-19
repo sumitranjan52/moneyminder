@@ -36,10 +36,8 @@ export class JoinGroupDialogComponent implements OnInit {
   join(value: any) {
     let group = {} as Group;
     group.encId = value.code;
-    console.log(group);
     if (!this.joinForm.invalid) {
       this.service.join(group).subscribe(response => {
-        console.log(response);
         this.singleton.setToken(response);
         if (response.body.code === "JOINED") {
           this.dialogRef.close(response.body);
@@ -48,6 +46,12 @@ export class JoinGroupDialogComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.message = error.error.message;
+          this.singleton.genLogout();
+        } else if (error.status === 406) {
+          this.message = error.error.message;
+        }
       });
     }
   }

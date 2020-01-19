@@ -29,11 +29,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit () {
-    console.log("here");
     this.service.token().subscribe(resp => {
       this.singleton.setToken(resp);
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
+      this.msg = error.error.message;
+        this.error = true;
     });
   }
 
@@ -47,20 +48,15 @@ export class LoginComponent implements OnInit {
 
   login(value: any) {
     let user = {} as User;
-    console.log("value ", value);
-    console.log("user ", user);
     if (value != null || value != undefined) {
       user.username = value.username;
       user.password = value.password;
     }
-    console.log("user ", user);
 
     if (user.username != null && user.password != null) {
       this.service.login(user).subscribe(resp => {
-        console.log(resp);
         this.singleton.setToken(resp);
         if (resp == null) {
-          console.log("no data is returned");
           return;
         }
         if (this.service.isToken(resp.body)) {
@@ -77,6 +73,8 @@ export class LoginComponent implements OnInit {
         }
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
+        this.msg = error.error.message;
+        this.error = true;
       });
     } else {
       this.msg = "username and password are mandatory";

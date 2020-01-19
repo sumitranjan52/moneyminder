@@ -57,12 +57,14 @@ export class FilterDialogComponent implements OnInit {
           return;
         }
         this.singleton.setToken(response);
-        console.log("items ", response.body);
         this.items = <Item[]>response.body;
         this.singleton.filterItem = item;
         this.dialogRef.close(this.items);
       }, (error: HttpErrorResponse) => {
         this.singleton.setToken(error);
+        if (error.status === 401) {
+          this.singleton.genLogout();
+        }
       });
     }
   }

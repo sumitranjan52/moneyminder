@@ -1,5 +1,3 @@
-import { environment } from './../../environments/environment';
-import { HttpErrorResponse } from '@angular/common/http';
 import { AccountService } from './../account/services/account.service';
 import { SingletonService } from './singleton.service';
 import { Injectable } from '@angular/core';

@@ -61,13 +61,11 @@ export class GroupComponent implements OnInit {
       } else {
         this.groups = <Group[]>response.body;
         this.originalGroupList = this.groups;
-        console.log(this.groups);
       }
     }, (error: HttpErrorResponse) => {
       this.singleton.setToken(error);
-      //this.message = error.error.message;
+      this.message = error.error.message;
       if(error.status === 401) {
-        console.log(error.status);
         this.singleton.genLogout();
       }
     });
@@ -88,7 +86,6 @@ export class GroupComponent implements OnInit {
           });
         }
       }
-      console.log('The join group dialog was closed');
     });
   }
 
@@ -111,7 +108,6 @@ export class GroupComponent implements OnInit {
           });
         }
       }
-      console.log('The create dialog dialog was closed');
     });
   }
 
@@ -121,7 +117,6 @@ export class GroupComponent implements OnInit {
 
   delete(group: Group, event: Event) {
     event.stopPropagation();
-    console.log(group);
 
     this.singleton.deleteData = group;
 
@@ -133,7 +128,6 @@ export class GroupComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != undefined && result != null) {
         if (result.code == 'DELETED') {
-          console.log(result);
           this.groups.splice(this.groups.indexOf(this.singleton.deleteData), 1);
           this.singleton.deleteData = {};
           this.snackBar.open(result.message, "Cool!", {
@@ -141,13 +135,11 @@ export class GroupComponent implements OnInit {
           });
         }
       }
-      console.log('The delete dialog dialog was closed');
     });
   }
 
   edit(group: Group, event: Event) {
     event.stopPropagation();
-    console.log(group);
     this.singleton.groupEdit = group;
     this.openCreateGroupDialog();
   }
@@ -163,7 +155,6 @@ export class GroupComponent implements OnInit {
     });
 
     sheet.afterDismissed().subscribe(result => {
-      console.log(result);
     });
   }
 }
