@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  api: "http://localhost:9090/MoneyMinder/api/",
-  token: "MM-Safe-Token"
+  api: "http://localhost:8080/MoneyMinder/api/",
+  token: "MM-Safe-Token",
 };
 
 /*
