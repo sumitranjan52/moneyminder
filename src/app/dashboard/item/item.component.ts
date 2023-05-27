@@ -62,7 +62,7 @@ export class ItemComponent implements OnInit {
 
   calculateAvg() {
     if (this.singleton.group.members) {
-      this.average = this.total / this.singleton.group.members.length;
+      this.average = Math.floor((this.total / this.singleton.group.members.length)*100)/100;
       this.groupMemSum = [];
       for (let member of this.singleton.group.members) {
         let addition = {
@@ -91,7 +91,7 @@ export class ItemComponent implements OnInit {
 
   openCreateItemDialog(): void {
     const dialogRef = this.dialog.open(CreateItemDialogComponent, {
-      width: '450px'
+      panelClass: "mm-panelClass"
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -107,7 +107,7 @@ export class ItemComponent implements OnInit {
 
   openFilterDialog(): void {
     const dialogRef = this.dialog.open(FilterDialogComponent, {
-      width: '350px'
+      panelClass: "mm-panelClass"
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -186,7 +186,7 @@ export class ItemComponent implements OnInit {
 
   openCreateCategoryDialog(): void {
     const dialogRef = this.dialog.open(CreateCategoryDialogComponent, {
-      width: '350px',
+      panelClass: "mm-panelClass",
       data: {}
     });
 
@@ -239,7 +239,7 @@ export class ItemComponent implements OnInit {
 
   updateMem() {
     const updateMem = this.dialog.open(UpdateMemberComponent, {
-      width: "45%"
+      panelClass: "mm-panelClass",
     });
 
     updateMem.afterClosed().subscribe(resp => {

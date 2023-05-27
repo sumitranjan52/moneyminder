@@ -40,7 +40,7 @@
         <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-mini-fab color="accent" style="margin-left: 10px;" (click)="openCreateCategoryDialog()">
+    <button mat-mini-fab color="accent" type="button" style="margin-left: 10px;" (click)="openCreateCategoryDialog()">
       <mat-icon>add</mat-icon>
     </button>
     <div *ngIf="purchasedby.touched && purchasedby.invalid && purchasedby.errors && singleton.group.id">

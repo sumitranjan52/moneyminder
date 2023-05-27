@@ -15,7 +15,7 @@ export class ShareComponent implements OnInit {
   }
 
   getUrl() {
-    return location.host + "/#/join/?token=" + this.data.encId;
+    return location.host + "/moneyminder/#/join/?token=" + this.data.encId;
   }
 
   close() {

@@ -31,3 +31,13 @@ mat-toolbar {
     padding: 0.9rem;
     box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+    .parent {
+        display: block;
+    }
+
+    .group, .item {
+        width: 100%;
+    }
+}

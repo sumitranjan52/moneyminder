@@ -148,6 +148,16 @@ body { height: 100%; margin: 0; font-family: Roboto, "Helvetica Neue", sans-seri
     border-right: 2px solid #365050;
   }
 
+  .mm-panelClass {
+    width: 450px;
+  }
+
+  @media (max-width: 768px) {
+    .mm-panelClass {
+      width: 90%;
+    }
+  }
+
   @keyframes rotate360 {
     0% {
       transform: translate(-50%, -50%) rotate(0deg) scale(1);
