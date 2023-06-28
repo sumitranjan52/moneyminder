@@ -49,7 +49,7 @@
                     <b>{{ item.name }}</b>
                 </mat-panel-title>
                 <mat-panel-description>
-                    ₹{{ item.amount }}
+                    ₹{{ item.amount }} by {{ item.purchaser.name }} on {{ getDateString(item.purchasedOn) }}
                 </mat-panel-description>
             </mat-expansion-panel-header>
             <p *ngIf="item.description">{{ item.description }}</p>
